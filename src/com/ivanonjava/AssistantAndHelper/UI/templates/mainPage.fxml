@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: blue;" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ivanonjava.AssistantAndHelper.UI.controllers.mainPageController">
+   <children>
+   
+   
+       <ImageView fitHeight="345.0" fitWidth="300.0" layoutX="11.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="30.0">
+           <viewport>
+               <Rectangle2D />
+           </viewport>
+      <image>
+              <Image url="@css/images/mImage.png" />
+      </image>
+       </ImageView>
+   
+       <TextField fx:id="login" layoutX="72.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="156.0" promptText="login" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="252.0">
+           <cursor>
+               <Cursor fx:constant="HAND" />
+           </cursor>
+       </TextField>
+       <PasswordField fx:id="pass" layoutX="72.0" layoutY="287.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="156.0" promptText="password" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="287.0">
+           <cursor>
+               <Cursor fx:constant="HAND" />
+           </cursor>
+       </PasswordField>
+       <Button defaultButton="true" layoutX="115.0" layoutY="319.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#enter" prefHeight="25.0" prefWidth="65.0" text="Войти!" textAlignment="CENTER" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="115.0" AnchorPane.topAnchor="319.0">
+           <cursor>
+               <Cursor fx:constant="HAND" />
+           </cursor>
+           <font>
+               <Font name="Bookman Old Style Bold" size="11.0" />
+           </font>
+       </Button>
+       <Text fill="#e4ed02" fontSmoothingType="LCD" layoutX="-2.0" layoutY="31.0" lineSpacing="2.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="ПОМОЩНИК МЕДСЕСТРЫ" textAlignment="CENTER" wrappingWidth="300.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="10.0">
+           <font>
+               <Font name="Book Antiqua Bold Italic" size="18.0" />
+           </font>
+       </Text>
+       <Label fx:id="infoLabel" layoutX="56.0" layoutY="330.0" />
+       <Button layoutX="237.0" layoutY="46.0" mnemonicParsing="false" onAction="#openVersionInfo" text="info" textAlignment="CENTER" AnchorPane.bottomAnchor="329.0" AnchorPane.rightAnchor="26.0">
+           <cursor>
+               <Cursor fx:constant="HAND" />
+           </cursor>
+       </Button>
+   </children>
+   <effect>
+      <InnerShadow blurType="GAUSSIAN" choke="0.45" color="#00fcff" height="65.48" radius="35.205" width="77.34" />
+   </effect>
+</AnchorPane>
