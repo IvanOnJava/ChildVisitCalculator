@@ -2,7 +2,6 @@ package com.ivanonjava.AssistantAndHelper.dynamicPages;
 
 import com.ivanonjava.AssistantAndHelper.Constants;
 import com.ivanonjava.AssistantAndHelper.domains.DatabaseController;
-import com.ivanonjava.AssistantAndHelper.domains.LogController;
 import com.ivanonjava.AssistantAndHelper.helpers.ActionButtonTableCell;
 import com.ivanonjava.AssistantAndHelper.pojo.Address;
 import javafx.collections.FXCollections;
@@ -53,7 +52,6 @@ public class AddressPage extends Stage {
         });
         vbox.getChildren().add(button);
         stage.setScene(new Scene(vbox));
-        LogController.write("AddressPage.addAddress() return[" + stage + "]");
         return stage;
     }
 
@@ -76,11 +74,9 @@ public class AddressPage extends Stage {
         setMinWidth(400);
 
         setScene(scene);
-        LogController.write("AddressPage::start");
     }
 
     private void config() {
-        LogController.write("AddressPage.config()");
         t_adr.setCellValueFactory(new PropertyValueFactory<>("address"));
         t_adr.setCellFactory(TextFieldTableCell.forTableColumn());
         t_adr.setOnEditCommit(this::editColumnAddress);
@@ -104,7 +100,6 @@ public class AddressPage extends Stage {
     }
 
     private void update() {
-        LogController.write("AddressPage.update()");
         adrList.clear();
         adrList.addAll(DatabaseController.getAllAddress());
     }
@@ -112,7 +107,6 @@ public class AddressPage extends Stage {
     private void editColumnNumber(TableColumn.CellEditEvent<Address, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setNumber(event.getNewValue());
-        LogController.write("AddressPage.editColumnNumber(event = "+ event +")");
         update();
     }
 
@@ -120,7 +114,6 @@ public class AddressPage extends Stage {
     private void editColumnAddress(TableColumn.CellEditEvent<Address, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setAddress(event.getNewValue());
-        LogController.write("AddressPage.editColumnAddress(event = "+ event +")");
         update();
     }
 }

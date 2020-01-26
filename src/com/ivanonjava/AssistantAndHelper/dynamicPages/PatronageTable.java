@@ -4,8 +4,6 @@ import com.ivanonjava.AssistantAndHelper.Constants;
 import com.ivanonjava.AssistantAndHelper.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.AssistantAndHelper.domains.DatabaseController;
 import com.ivanonjava.AssistantAndHelper.domains.FileController;
-import com.ivanonjava.AssistantAndHelper.domains.LogController;
-import com.ivanonjava.AssistantAndHelper.pojo.PatientForDocument;
 import com.ivanonjava.AssistantAndHelper.pojo.PatientForPatronage;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -86,21 +84,21 @@ public class PatronageTable extends DocumentTable<PatientForPatronage> {
     private void editColumnThreeWeeks(TableColumn.CellEditEvent<PatientForPatronage, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setThreeWeeks(event.getNewValue());
-        LogController.write("DocumentTable.editColumnThreeWeeks(event = " + event + ")");
+
         updated();
     }
 
     private void editColumnTwoWeeks(TableColumn.CellEditEvent<PatientForPatronage, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setTwoWeeks(event.getNewValue());
-        LogController.write("DocumentTable.editColumnTwoWeeks(event = " + event + ")");
+
         updated();
     }
 
     private void editColumnThreeDay(TableColumn.CellEditEvent<PatientForPatronage, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setThreeDay(event.getNewValue());
-        LogController.write("DocumentTable.editColumnThreeDay(event = " + event + ")");
+
         updated();
     }
 

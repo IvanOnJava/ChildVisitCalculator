@@ -6,12 +6,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
-public class LogController extends Thread {
+public class xLogController extends Thread {
     private static final ArrayList<String> log = new ArrayList<>();
-    private static LogController instance;
+    private static xLogController instance;
     private static String nameLog;
 
-    private LogController() {
+    private xLogController() {
         nameLog = CalendarController.getNow().toString() + ".log";
         try {
             Files.createFile(Paths.get(nameLog));
@@ -26,12 +26,12 @@ public class LogController extends Thread {
 
     public static void Instantiate() {
         instance = instance == null ?
-                new LogController() : instance;
+                new xLogController() : instance;
     }
 
     @Override
     public void run() {
-        LogController.write("LogController::start[" + nameLog + "]");
+        xLogController.write("LogController::start[" + nameLog + "]");
         while (true) {
             synchronized (log) {
                 if (!log.isEmpty()) {

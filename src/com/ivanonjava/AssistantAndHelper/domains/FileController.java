@@ -23,7 +23,6 @@ public class FileController {
     private FileController() {
         File file = new File(Constants.DOCUMENT_FILE_PATH);
         file.mkdir();
-        LogController.write("FileController::start");
     }
 
     public static void Instantiate() {
@@ -32,7 +31,6 @@ public class FileController {
     }
 
     public static void writePatientsDiaryToFile(String beginDate, String endDate, int number) {
-        LogController.write("FileController.writePatientsDiaryToFile(beginDate = " + beginDate + ", endDate = " + endDate + ", number = " + number + ")");
         Date[] dates = CalendarController.getDays(beginDate, endDate);
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Дневник");
@@ -98,7 +96,6 @@ public class FileController {
     }
 
     public static void savePatronage(String begin, String end, int number) {
-        LogController.write("FileController.savePatronage(begin = " + begin + ", end = " + end + ", number = " + number + ")");
         ArrayList<PatientForPatronage> list = DatabaseController.getPatientsForPatronage("birthday", true, begin, end, number);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -223,28 +220,24 @@ public class FileController {
     }
 
     private static void save(HSSFWorkbook workbook, File file) {
-        LogController.write("FileController.save(workbook = " + workbook + ", file = " + file);
         file.getParentFile().mkdirs();
         FileOutputStream outFile = null;
         try {
             outFile = new FileOutputStream(file);
             workbook.write(outFile);
         } catch (IOException e) {
-            LogController.write("FileController.save(workbook = " + workbook + ", file = " + file);
             e.printStackTrace();
         }
         try {
             if (outFile != null)
                 outFile.close();
         } catch (IOException e) {
-            LogController.write("FileController.save(workbook = " + workbook + ", file = " + file);
             e.printStackTrace();
         }
     }
 
 
     public static void saveMagazine(String begin, String end) {
-        LogController.write("FileController.saveMagazine(begin = " + begin + ", end = " + end);
 
         ArrayList<PatientForMagazine> list = DatabaseController.getPatientsForMagazine("birthday", true, begin, end);
 
@@ -402,7 +395,6 @@ public class FileController {
             String[] temp = date.split("-");
             result = String.format("%s.%s.%s", temp[2], temp[1], temp[0]);
         }
-        LogController.write("FileController.replaceDate(date = " + date + ") return[" + result + "]");
         return result;
     }
 

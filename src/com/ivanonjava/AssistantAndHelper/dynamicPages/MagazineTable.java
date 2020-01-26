@@ -4,9 +4,7 @@ import com.ivanonjava.AssistantAndHelper.Constants;
 import com.ivanonjava.AssistantAndHelper.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.AssistantAndHelper.domains.DatabaseController;
 import com.ivanonjava.AssistantAndHelper.domains.FileController;
-import com.ivanonjava.AssistantAndHelper.domains.LogController;
 import com.ivanonjava.AssistantAndHelper.pojo.PatientForMagazine;
-import com.ivanonjava.AssistantAndHelper.pojo.PatientForPatronage;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
@@ -38,14 +36,14 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
     private TableColumn<PatientForMagazine, String> t_dia = new TableColumn<>(Constants.NAME_TABLE_DIA);
 
     public MagazineTable() {
-        LogController.write("MagazineTable::start");
+
         configTable();
     }
 
 
     @Override
     void configTable() {
-        LogController.write("MagazineTable.configTable()");
+
         super.patientsList.setAll(DatabaseController.getPatientsForMagazine());
         super.configDocumentTable();
         t_twoW.setCellValueFactory(new PropertyValueFactory<>("twoWeeks"));
@@ -133,26 +131,24 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
     private void editColumnThreeWeeks(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setThreeWeeks(event.getNewValue());
-        LogController.write("MagazineTable.editColumnThreeWeeks(event = " + event + ")");
+
         updated();
     }
 
     private void editColumnTwoWeeks(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setTwoWeeks(event.getNewValue());
-        LogController.write("MagazineTable.editColumnTwoWeeks(event = " + event + ")");
+
         updated();
     }
     private void editColumnGender(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setGender(event.getNewValue());
-        LogController.write("MagazineTable.editColumnGender(event = " + event + ")");
         updated();
     }
 
     @Override
     public void saveDocument(String begin, String end) {
-        LogController.write("MagazineTable.saveDocument(begin = " + begin + ", end = " + end + ")");
         FileController.saveMagazine(begin, end);
     }
 
@@ -160,56 +156,48 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
     private void editColumnDateNBO(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setDateNBO(event.getNewValue());
-        LogController.write("MagazineTable.editColumnDateNBO(event = " + event + ")");
         updated();
     }
 
     private void editColumnDiagnose(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setDiagnose(event.getNewValue());
-        LogController.write("MagazineTable.editColumnDiagnose(event = " + event + ")");
         updated();
     }
 
     private void editColumnDateAUDIO(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setDateAUDIO(event.getNewValue());
-        LogController.write("MagazineTable.editColumnDateAUDIO(event = " + event + ")");
         updated();
     }
 
     private void editColumnDateBCJ(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setDateBCJ(event.getNewValue());
-        LogController.write("MagazineTable.editColumnDateBCJ(event = " + event + ")");
         updated();
     }
 
     private void editColumnSerialBCJ(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setSerialBCJ(event.getNewValue());
-        LogController.write("MagazineTable.editColumnSerialBCJ(event = " + event + ")");
         updated();
     }
 
     private void editColumnDateGEP(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setDateGEP(event.getNewValue());
-        LogController.write("MagazineTable.editColumnDateGEP(event = " + event + ")");
         updated();
     }
 
     private void editColumnSerialGEP(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setSerialGEP(event.getNewValue());
-        LogController.write("MagazineTable.editColumnSerialGEP(event = " + event + ")");
         updated();
     }
 
     private void editColumnRoddom(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setRoddom(event.getNewValue());
-        LogController.write("MagazineTable.editColumnRoddom(event = " + event + ")");
         updated();
     }
 
@@ -217,34 +205,29 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
     private void editColumnHelper(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setHelper(event.getNewValue());
-        LogController.write("MagazineTable.editColumnHelper(event = " + event + ")");
         updated();
     }
 
     private void editColumnWeightD(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setWeightD(event.getNewValue());
-        LogController.write("MagazineTable.editColumnWeightD(event = " + event + ")");
         updated();
     }
 
     private void editColumnHeightB(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setHeightB(event.getNewValue());
-        LogController.write("MagazineTable.editColumnHeightB(event = " + event + ")");
         updated();
     }
 
     private void editColumnWeightB(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setWeightB(event.getNewValue());
-        LogController.write("MagazineTable.editColumnWeightB(event = " + event + ")");
         updated();
     }
 
     @Override
     public void updateTable() {
-        LogController.write("MagazineTable.updateTable()");
         String search = DocumentPageControllers.search;
         String begin = DocumentPageControllers.beginDate;
         String end = DocumentPageControllers.endDate;

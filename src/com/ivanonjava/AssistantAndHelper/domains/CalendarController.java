@@ -3,7 +3,6 @@ package com.ivanonjava.AssistantAndHelper.domains;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Calendar;
 
 public class CalendarController {
@@ -19,12 +18,10 @@ public class CalendarController {
         calendar = Calendar.getInstance();
         memoryDate = new int[3];
         memoryFlag = false;
-        LogController.write("CalendarController::start ");
     }
     public static Date getNow() {
         LocalDate localDate = LocalDate.now();
         String now = DateTimeFormatter.ofPattern("dd.MM.yyyy").format(localDate);
-        LogController.write("CalendarController.getNow() [return getDate(" + now + ")]");
         return getDate(now);
     }
 
@@ -36,7 +33,6 @@ public class CalendarController {
         calendar.clear();
         int[] data = replaceDay(day);
         calendar.set(data[0], data[1], data[2]);
-        LogController.write("CalendarController.getDate(day = " + day + ") [return new Date(" + calendar.getTime().getTime() + ")]");
         return new Date(calendar.getTime().getTime());
     }
 
@@ -45,8 +41,6 @@ public class CalendarController {
         int[] data = replaceDay(dates);
         calendar.set(data[0], data[1], data[2]);
         calendar.add(Calendar.YEAR, i);
-        LogController.write("CalendarController.getDatePlusYear(day = " + dates + ", i = " + i + ") " +
-                "[return new Date(" + calendar.getTime().getTime() + ")]");
 
         return new Date(calendar.getTime().getTime());
     }
@@ -74,8 +68,6 @@ public class CalendarController {
                 memoryDate = data;
                 memoryFlag = false;
             }
-            LogController.write("CalendarController.replaceDay(day = " + day + ") " +
-                    "[return " + Arrays.toString(data) + "]");
             return data;
         }
     }
@@ -85,8 +77,6 @@ public class CalendarController {
         int[] data = replaceDay(dates);
         calendar.set(data[0], data[1], data[2]);
         calendar.add(Calendar.MONTH, i);
-        LogController.write("CalendarController.getDatePlusMonth(day = " + dates + ", i = " + i + ") " +
-                "[return new Date(" + calendar.getTime().getTime() + ")]");
         return new Date(calendar.getTime().getTime());
     }
 
@@ -105,8 +95,6 @@ public class CalendarController {
             memoryFlag = true;
             dates[i] = getDateForTable(birthday, i - 3, Calendar.MONTH, id_table);
         }
-        LogController.write("CalendarController.getVisitDays(birthday = " + birthday + ", discardDay = " + discardDay + ", id_table = " + id_table + ") " +
-                "[return " + Arrays.toString(dates) + "]");
         return dates;
     }
 
@@ -148,8 +136,6 @@ public class CalendarController {
                 calendar.add(Calendar.DAY_OF_YEAR, 1);
                 continue;
             }
-            LogController.write("CalendarController.getDateForTable(day = " + day + ", count = " + count + ", field = " + field + ", id_table = " + id_table + ") " +
-                    "[return new Date(" + calendar.getTime().getTime() + ")]");
             return new Date(calendar.getTime().getTime());
         }
     }
@@ -165,15 +151,11 @@ public class CalendarController {
         for (int i = 0; i < data.length; i++) {
             data[i] = getDayPlusDay(b_date, i);
         }
-        LogController.write("CalendarController.getDays(b_date = " + b_date + ", e_date = " + e_date + ") " +
-                "[return " + Arrays.toString(data) + "]");
         return data;
     }
 
     private static int daysBetween(java.util.Date d2, java.util.Date d1) {
         int between = (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
-        LogController.write("CalendarController.daysBetween(d2 = " + d2 + ", d1 = " + d1 + ") " +
-                "[return " + between + "]");
 
         return between;
     }
@@ -183,8 +165,6 @@ public class CalendarController {
         int[] data = replaceDay(date);
         calendar.set(data[0], data[1], data[2]);
         calendar.add(Calendar.DAY_OF_YEAR, i);
-        LogController.write("CalendarController.daysBetween(date = " + date + ", i = " + i + ") " +
-                "[return new Date(" + calendar.getTime().getTime() + ")]");
         return new Date(calendar.getTime().getTime());
     }
 }

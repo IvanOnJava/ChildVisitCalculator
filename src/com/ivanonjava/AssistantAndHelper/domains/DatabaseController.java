@@ -3,7 +3,6 @@ package com.ivanonjava.AssistantAndHelper.domains;
 import com.ivanonjava.AssistantAndHelper.Constants;
 import com.ivanonjava.AssistantAndHelper.pojo.*;
 
-import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public final class DatabaseController {
             Class.forName(Constants.DB_Driver).getDeclaredConstructor().newInstance();
             try {
                 connect = DriverManager.getConnection(Constants.DB_URL + Constants.DB_NAME);
-                LogController.write("DatabaseController::createConnect");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -55,7 +53,6 @@ public final class DatabaseController {
     }
 
     public static boolean addHolidays(String b_date, String e_date) {
-        LogController.write("DatabaseController.addHolidays(b_date = " + b_date + ", e_date = " + e_date + ")");
         Date[] days = CalendarController.getDays(b_date, e_date);
         for (Date day : days) {
             if (validateHoliday(day)) {
@@ -67,7 +64,6 @@ public final class DatabaseController {
 
 
     public static boolean addHolidays(String dates, boolean everyYear) {
-        LogController.write("DatabaseController.addHolidays(dates = " + dates + ", everyYear = " + everyYear + ")");
 
         if (everyYear) {
             for (int i = -20; i < 20; i++) {
@@ -96,7 +92,6 @@ public final class DatabaseController {
             rs.next();
             return rs.getInt(1) == 0;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.validateHoliday(day = " + day + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(rs, st);
@@ -111,7 +106,6 @@ public final class DatabaseController {
             ps.setDate(1, day);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LogController.write("DatabaseController.addHoliday(day = " + day + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(ps);
@@ -126,7 +120,6 @@ public final class DatabaseController {
             ps.setDate(1, day);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LogController.write("DatabaseController.removeHolidays(date = " + date + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(ps);
@@ -148,7 +141,6 @@ public final class DatabaseController {
                     listHolidays.add(rs.getDate(1));
                 }
             } catch (SQLException e) {
-                LogController.write("DatabaseController.getHolidays(year = " + year + ", month = " + month + ") SQL{" + e.getSQLState() + "}");
                 e.printStackTrace();
             }
 
@@ -160,7 +152,6 @@ public final class DatabaseController {
                     listHolidays.add(rs.getDate(1));
                 }
             } catch (SQLException e) {
-                LogController.write("DatabaseController.getHolidays(year = " + year + ", month = " + month + ") SQL{" + e.getSQLState() + "}");
                 e.printStackTrace();
             }
         }
@@ -192,7 +183,6 @@ public final class DatabaseController {
                 addInfoForPatient(id, patient);
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.addPatient(patient = " + patient + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
     }
@@ -228,7 +218,6 @@ public final class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
 
-            LogController.write("DatabaseController.addInfoForPatient(id = " + id + ", patient = " + patient + ") SQL{" + e.getSQLState() + "}");
         }
     }
 
@@ -249,7 +238,6 @@ public final class DatabaseController {
                     + days[12].getTime() + ", " + days[13].getTime() + ", " + days[14].getTime() + ")");
 
         } catch (SQLException e) {
-            LogController.write("DatabaseController.addTableForPatient(id = " + id + ", birthday = " + birthday + ", discardDay = " + discardDay + ", id_adr = " + id_adr + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
 
@@ -282,14 +270,12 @@ public final class DatabaseController {
                         }
                         ps.executeUpdate();
                     } catch (SQLException e) {
-                        LogController.write("DatabaseController.addTableForPatients() SQL{" + e.getSQLState() + "}");
 
                         e.printStackTrace();
                     }
                 }
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.addTableForPatients() SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(rs, st, ps);
@@ -329,7 +315,6 @@ public final class DatabaseController {
                 return false;
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.isDayCrowded(date = " + date + ", id = " + id + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
         return false;
@@ -346,7 +331,6 @@ public final class DatabaseController {
                 listHolidays.add(rs.getDate(1));
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getHolidays(begin = " + begin + ", end = " + end + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(rs, ps);
@@ -374,7 +358,6 @@ public final class DatabaseController {
                 }
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.deletePatient(patient_id = " + patient_id + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -388,7 +371,6 @@ public final class DatabaseController {
                     t.close();
                 }
             } catch (Exception e) {
-                LogController.write("DatabaseController.closeStatement() SQL{" + e.getLocalizedMessage() + "}");
                 e.printStackTrace();
             }
         }
@@ -401,7 +383,6 @@ public final class DatabaseController {
             ps.setInt(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientNameOnId(id = " + id + ", newNameValue = " + newNameValue + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(ps);
@@ -415,7 +396,6 @@ public final class DatabaseController {
             ps.setInt(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientAddressOnId(id = " + id + ", address = " + address + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(ps);
@@ -429,7 +409,6 @@ public final class DatabaseController {
             ps.setInt(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientAddressOnId(id = " + id + ", phone = " + phone + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(ps);
@@ -443,7 +422,6 @@ public final class DatabaseController {
             ps.setInt(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientIsPresentOnId(id = " + id + ", isPresent = " + isPresent + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(ps);
@@ -457,7 +435,6 @@ public final class DatabaseController {
             ps.setInt(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientCommentOnId(id = " + id + ", comment = " + comment + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         } finally {
             closeStatement(ps);
@@ -475,7 +452,6 @@ public final class DatabaseController {
             rs = ps.executeQuery();
             selectPatientForPatronage(listPatient);
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getPatientsForPatronage(number = " + number + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
             addTableForPatients();
         } finally {
@@ -520,13 +496,11 @@ public final class DatabaseController {
                             rs.getInt("number")
                     ));
                 } catch (SQLException e) {
-                    LogController.write("DatabaseController.selectPatientForMagazine() SQL{" + e.getSQLState() + "} ! нет данных о пациенте = " + rs.getInt(1));
                     e.printStackTrace();
                 }
 
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.selectPatientForMagazine() SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -568,13 +542,7 @@ public final class DatabaseController {
                         rs.getDate("eleven_months").toString()
                 ));
             } catch (SQLException e) {
-                try {
-                    LogController.write("DatabaseController.selectPatientForPatronage() SQL{" + e.getSQLState() + "}! нет данных о пациенте = " + rs.getInt(1));
-                } catch (SQLException ex) {
-                    LogController.write("DatabaseController.selectPatientForPatronage() SQL{" + e.getSQLState() + "}");
-
-                    ex.printStackTrace();
-                }
+                e.printStackTrace();
             }
 
         }
@@ -590,7 +558,6 @@ public final class DatabaseController {
                 }
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.validateUser(i = " + i + ", text = " + text + " text2 = " + text1 + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -626,7 +593,6 @@ public final class DatabaseController {
                 }
 
             } catch (SQLException e) {
-                LogController.write("DatabaseController.getDiaryForDocument(date = " + date + ", number = " + number + ") SQL{" + e.getSQLState() + "}");
                 e.printStackTrace();
             }
         }
@@ -649,7 +615,6 @@ public final class DatabaseController {
                 adrs.add(rs.getString(1));
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getAddresses() SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -672,7 +637,6 @@ public final class DatabaseController {
                             "LEFT JOIN addresses a on patients.address = a.address ORDER BY " + getSortAction());
             selectPatientForMagazine(list);
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getPatientsForMagazine() SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
         return list;
@@ -688,7 +652,6 @@ public final class DatabaseController {
                 numbers.add(rs.getInt(1));
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getAllNumber() SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
         return numbers;
@@ -713,7 +676,6 @@ public final class DatabaseController {
             selectPatientForMagazine(listPatient);
 
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getPatientsForMagazine(s = " + s + ", selected = " + selected + ", date = " + date + ", date1 = " + date1 + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -733,7 +695,6 @@ public final class DatabaseController {
                 }
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.setAction(s = " + s + ", date = " + date + ", date1 = " + date1 + ") SQL{" + e.getSQLState() + "}");
         }
 
     }
@@ -761,7 +722,6 @@ public final class DatabaseController {
                 sql += " AND " + s + " <= " + CalendarController.getDate(date1).getTime();
             }
         }
-        LogController.write("DatabaseController.getSqlString(s = " + s + ", selected = " + selected + ", date = " + date + ", date1 = " + date1 + ") SQL{" + sql + "}");
         return sql;
     }
 
@@ -776,7 +736,6 @@ public final class DatabaseController {
             rs = ps.executeQuery();
             selectPatientForPatronage(listPatient);
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getPatientsForPatronage(s = " + s + ", selected = " + selected + ", date = " + date + ", date1 = " + date1 + ") SQL{" + sql + "}");
             e.printStackTrace();
         } finally {
             closeStatement(rs, ps);
@@ -804,7 +763,6 @@ public final class DatabaseController {
             }
 
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updateAddress(oldAddress = " + oldAddress + ", newAddress = " + newAddress + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -820,11 +778,9 @@ public final class DatabaseController {
 
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updateAddressNumber(address = " + address + ", number = " + number + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            LogController.write("DatabaseController.updateAddressNumber(address = " + address + ", number = " + number + ") " + NumberFormatException.class + "{" + number + "}");
 
             return false;
         }
@@ -840,7 +796,6 @@ public final class DatabaseController {
                 list.add(new Address(rs.getString(1), rs.getString(2)));
             }
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getAllAddress() SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -855,7 +810,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientWeightB(id = " + id + ", weightB = " + weightB + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -870,7 +824,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientHeightB(id = " + id + ", heightB = " + heightB + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -885,7 +838,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientWeightD(id = " + id + ", weightD = " + weightD + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -900,7 +852,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientDiagnoseOnId(id = " + id + ", diagnose = " + diagnose + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -915,7 +866,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientDateNBO(id = " + id + ", dateNBO = " + dateNBO + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -930,7 +880,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientDateAUDIO(id = " + id + ", dateAUDIO = " + dateAUDIO + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
         return false;
@@ -944,7 +893,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientDateBCJ(id = " + id + ", dateBCJ = " + dateBCJ + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
         return false;
@@ -958,7 +906,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientSerialBCJ(id = " + id + ", serialBCJ = " + serialBCJ + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -973,7 +920,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientDateGEP(id = " + id + ", dateGEP = " + dateGEP + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -988,7 +934,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientDateGEP(id = " + id + ", serialGEP = " + serialGEP + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1003,7 +948,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientRoddom(id = " + id + ", roddom = " + roddom + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1018,7 +962,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientHelper(id = " + id + ", helper = " + helper + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1033,7 +976,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientOneDay(id = " + id + ", oneDay = " + oneDay + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1049,11 +991,9 @@ public final class DatabaseController {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            LogController.write("DatabaseController.addAddress(address = " + address + ", number = " + number + ") SQL{" + e.getSQLState() + "}");
             return false;
 
         } catch (NumberFormatException e) {
-            LogController.write("DatabaseController.addAddress(address = " + address + ", number = " + number + ")" + NumberFormatException.class + "{" + number + "}");
             return false;
         }
     }
@@ -1065,7 +1005,6 @@ public final class DatabaseController {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            LogController.write("DatabaseController.deleteAddress(address = " + address + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1079,7 +1018,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientSertificateOnId(id = " + id + ", sertificate = " + sertificate + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1094,7 +1032,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientTuberOnId(id = " + id + ", tuber = " + tuber + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1130,7 +1067,6 @@ public final class DatabaseController {
             result += max + "\nМедотвод - " + med + "\nОтказ - " + otk;
 
         } catch (SQLException e) {
-            LogController.write("DatabaseController.getTextForTutu(begin = " + begin + ", end = " + end + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
         return result;
@@ -1144,7 +1080,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientGenderOnId(id = " + id + ", gender = " + gender + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
         return false;
@@ -1158,7 +1093,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientGenderOnId(id = " + id + ", k = " + k + ") SQL{" + e.getSQLState() + "}");
             e.printStackTrace();
         }
         return false;
@@ -1171,7 +1105,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientOneDay(id = " + id + ", threeDay = " + threeDay + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1186,7 +1119,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientOneDay(id = " + id + ", oneDay = " + twoWeeks + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }
@@ -1201,7 +1133,6 @@ public final class DatabaseController {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LogController.write("DatabaseController.updatePatientOneDay(id = " + id + ", threeweeks = " + threeWeeks + ") SQL{" + e.getSQLState() + "}");
 
             e.printStackTrace();
         }

@@ -5,7 +5,6 @@ import com.ivanonjava.AssistantAndHelper.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.AssistantAndHelper.domains.DatabaseController;
 import com.ivanonjava.AssistantAndHelper.helpers.Converter;
 import com.ivanonjava.AssistantAndHelper.pojo.Patient;
-import javafx.application.Application;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

@@ -3,7 +3,6 @@ package com.ivanonjava.AssistantAndHelper.dynamicPages;
 import com.ivanonjava.AssistantAndHelper.Constants;
 import com.ivanonjava.AssistantAndHelper.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.AssistantAndHelper.domains.DatabaseController;
-import com.ivanonjava.AssistantAndHelper.domains.LogController;
 import com.ivanonjava.AssistantAndHelper.helpers.ActionButtonTableCell;
 import com.ivanonjava.AssistantAndHelper.helpers.TranslateWord;
 import com.ivanonjava.AssistantAndHelper.pojo.PatientForDocument;
@@ -50,7 +49,6 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
 
 
     void updateAddresses() {
-        LogController.write("DocumentTable.updateAddresses()");
         addresses.setAll(DatabaseController.getAddresses());
     }
 
@@ -61,7 +59,6 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
             table.setCellFactory(TextFieldTableCell.forTableColumn());
             this.getColumns().add(table);
         }
-        LogController.write("DocumentTable.setCell(" + Arrays.toString(nodes) + ")");
     }
 
     @Override
@@ -80,7 +77,6 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
 
     void configDocumentTable() {
 
-        LogController.write("DocumentTable.configDocumentTable()");
         addresses.setAll(DatabaseController.getAddresses());
         setEditable(true);
 
@@ -144,21 +140,18 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
 
 
     void updated() {
-        LogController.write("DocumentTable.updated()");
         DocumentPageControllers.update();
     }
 
     private void editColumnKv(TableColumn.CellEditEvent<T, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setKv(event.getNewValue());
-        LogController.write("DocumentTable.editColumnKv(event = " + event + ")");
         updated();
     }
 
     private void editColumnOneDay(TableColumn.CellEditEvent<T, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setOneDay(event.getNewValue());
-        LogController.write("DocumentTable.editColumnOneDay(event = " + event + ")");
         updated();
     }
 
@@ -166,14 +159,12 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
     private void editColumnPhone(TableColumn.CellEditEvent<T, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setPhone(event.getNewValue());
-        LogController.write("DocumentTable.editColumnPhone(event = " + event + ")");
         updated();
     }
 
     private void editColumnAddress(TableColumn.CellEditEvent<T, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setAddress(event.getNewValue());
-        LogController.write("DocumentTable.editColumnAddress(event = " + event + ")");
         updated();
     }
 
@@ -181,14 +172,12 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
     private void editColumnName(TableColumn.CellEditEvent<T, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setFIO(event.getNewValue());
-        LogController.write("DocumentTable.editColumnName(event = " + event + ")");
         updated();
     }
 
     private void editColumnComment(TableColumn.CellEditEvent<T, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setComment(event.getNewValue());
-        LogController.write("DocumentTable.editColumnComment(event = " + event + ")");
         updated();
     }
 

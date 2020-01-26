@@ -3,7 +3,7 @@ package com.ivanonjava.AssistantAndHelper;
 import com.ivanonjava.AssistantAndHelper.domains.CalendarController;
 import com.ivanonjava.AssistantAndHelper.domains.DatabaseController;
 import com.ivanonjava.AssistantAndHelper.domains.FileController;
-import com.ivanonjava.AssistantAndHelper.domains.LogController;
+
 import com.ivanonjava.AssistantAndHelper.helpers.Converter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,8 +25,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         CalendarController.Instantiate();
-        LogController.write("Main.main(args = " + Arrays.toString(args) + ")  Start program");
-        LogController.Instantiate();
         DatabaseController.Instantiate();
         FileController.Instantiate();
         Converter.getInstance();
@@ -34,7 +32,7 @@ public class Main extends Application {
     }
 
     public void start(Stage primaryStage) throws IOException {
-        LogController.write("Main.start(stage = " + primaryStage.toString() + ")  Launch UI");
+
         stage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource(String.format("%s%s%s", TEMPLATES_URL, "main", POST_F)));
         stage.setTitle(Constants.TITLE);
@@ -48,7 +46,7 @@ public class Main extends Application {
     }
 
     public static void setDocumentPage() {
-        LogController.write("Main.setDocumentPage()");
+
         stage.setResizable(true);
         stage.setMinWidth(Constants.DOCUMENT_PAGE_MIN_WIDTH);
         stage.setMinHeight(Constants.DOCUMENT_PAGE_MIN_HEIGHT);
@@ -56,13 +54,13 @@ public class Main extends Application {
     }
 
     public static void setHolidaysPage() {
-        LogController.write("Main.setHolidaysPage()");
+
         setPage("holidays");
     }
 
     private static void setPage(String page) {
 
-        LogController.write("Main.setPage(page = " + page + ")");
+
         String str = String.format("%s%s%s", TEMPLATES_URL, page, POST_F);
         try {
             Parent root = FXMLLoader.load(Main.class.getResource(str));
@@ -74,7 +72,7 @@ public class Main extends Application {
     }
 
     public static Stage getStage() {
-        LogController.write("Main.getStage() [return " + stage + "]");
+
         return stage;
     }
 }
