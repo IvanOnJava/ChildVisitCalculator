@@ -2,24 +2,31 @@ package com.ivanonjava.ChildVisitCalculator.dynamicPages;
 
 import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
+import com.ivanonjava.ChildVisitCalculator.domains.CalendarController;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
 import com.ivanonjava.ChildVisitCalculator.pojo.Patient;
+import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PatientPage extends Stage {
-
+    private HBox box;
+    private VBox vBoxLeft;
+    private VBox vBoxRight;
     private TextField fullName;
 
     private TextField address_text;
@@ -59,13 +66,11 @@ public class PatientPage extends Stage {
 
     private void configButton() {
         fullName = getTextField("ФИО");
-
         address_text = getTextField("Адрес");
         address_text.setEditable(false);
         addresses = new MenuButton();
         addresses.getItems().addAll(getAddressesItems());
         addresses.setText("...");
-
         kv = getTextField("кв");
         kv.setMaxWidth(50);
 
@@ -73,7 +78,7 @@ public class PatientPage extends Stage {
 
         birthday = getDatePicker("Дата рождения");
         birthday.setEditable(false);
-
+        birthday.setOnAction(this::test);
         gender = new MenuButton();
         gender.getItems().addAll(getGenders());
 
@@ -83,7 +88,7 @@ public class PatientPage extends Stage {
 
         discardDay = getDatePicker("Дата выписки");
         discardDay.setEditable(false);
-
+        discardDay.setOnAction(this::test);
         discardWeight = getTextField("Вес при выписке(г)");
 
         diagnose = getTextField("Диагноз");
@@ -140,12 +145,21 @@ public class PatientPage extends Stage {
                         discardDay.getEditor(), discardWeight, diagnose, dateNBO.getEditor(), dateAUDIO.getEditor(),
                         dateBCJ.getEditor(), serialBCJ, dateGEP.getEditor(), serialGEP, roddom, helper);
                 DocumentPageControllers.update();
-                
-
             }
         });
-        System.out.println("222");
 
+    }
+
+    private void test(ActionEvent actionEvent) {
+
+        if(discardDay.getEditor().getText().trim().length() > 5 & birthday.getEditor().getText().trim().length() > 5 && address_text.getText().trim().length() > 5){
+            vBoxRight.getChildren().clear();
+            java.util.Date[] dates =  CalendarController.getVisitDays(birthday.getEditor().getText(), discardDay.getEditor().getText(), DatabaseController.getNumberForAdress(address_text.getText()));
+            vBoxRight.getChildren().add(new Separator(Orientation.HORIZONTAL));
+            for(java.util.Date date : dates){
+                vBoxRight.getChildren().addAll(new Text(date.toString()), new Separator(Orientation.HORIZONTAL));
+            }
+        }
     }
 
 
@@ -162,10 +176,13 @@ public class PatientPage extends Stage {
     }
 
     public PatientPage() {
+
+        box = new HBox();
         getIcons().add(new Image(Constants.PATH_ICON_ADD_PATIENT));
         configButton();
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(
+        vBoxLeft = new VBox();
+        vBoxRight = new VBox();
+        vBoxLeft.getChildren().addAll(
                 new Separator(),
                 getControl("ФИО                 ", fullName),
                 new Separator(),
@@ -202,14 +219,17 @@ public class PatientPage extends Stage {
                 new Separator(),
                 getControl("Кто передал ", helper),
                 new Separator(),
-                getControl("\t\t\t\t", buttonAdd)
+                getControl("", buttonAdd)
         );
-        vBox.setSpacing(1.0);
+        vBoxLeft.setSpacing(1.0);
+        box.setMinSize(500, 500);
         fullName.setMinWidth(220);
         address_text.setMinWidth(220);
         roddom.setMinWidth(220);
         helper.setMinWidth(220);
-        Scene scene = new Scene(vBox);
+
+        box.getChildren().addAll(new Separator(Orientation.VERTICAL),vBoxLeft, new Separator(Orientation.VERTICAL), vBoxRight,new Separator(Orientation.VERTICAL));
+        Scene scene = new Scene(box);
         setMinHeight(600);
         setMinWidth(400);
         buttonAdd.setAlignment(Pos.CENTER);
@@ -222,9 +242,11 @@ public class PatientPage extends Stage {
 
     private HBox getControl(String text, Node... nodes) {
         HBox hBox = new HBox();
-        hBox.setAlignment(Pos.TOP_LEFT);
+        if(text.equals(""))
+            hBox.setAlignment(Pos.CENTER);
+        else
+            hBox.setAlignment(Pos.TOP_LEFT);
         hBox.getChildren().add(new Text("  "));
-        hBox.getChildren().add(new Separator(Orientation.VERTICAL));
         hBox.getChildren().add(new Text(text));
         hBox.getChildren().addAll(nodes);
         return hBox;

@@ -80,7 +80,7 @@ public class CalendarController {
         return new Date(calendar.getTime().getTime());
     }
 
-    static Date[] getVisitDays(String birthday, String discardDay, int id_table) {
+    public static Date[] getVisitDays(String birthday, String discardDay, int id_table) {
         java.sql.Date[] dates = new java.sql.Date[15];
         memoryFlag = true;
         dates[0] = getDateForTable(discardDay, 1, Calendar.DAY_OF_YEAR, id_table);

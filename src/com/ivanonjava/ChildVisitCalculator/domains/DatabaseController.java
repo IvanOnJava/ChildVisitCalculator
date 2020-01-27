@@ -642,7 +642,17 @@ public final class DatabaseController {
         return list;
     }
 
-
+    public static int getNumberForAdress(String address){
+        try {
+            st = getConnect().createStatement();
+            rs = st.executeQuery("SELECT number FROM addresses WHERE addresses.address =\"" + address + "\"");
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
     public static ArrayList<Integer> getAllNumber() {
         ArrayList<Integer> numbers = new ArrayList<>();
         try {
