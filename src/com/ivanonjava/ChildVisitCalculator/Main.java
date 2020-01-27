@@ -33,7 +33,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource(String.format("%s%s%s", TEMPLATES_URL, "main", POST_F)));
+        Parent root = FXMLLoader.load(getClass().getResource(String.format("%s%s%s", TEMPLATES_URL, "newHolidays", POST_F)));
         stage.setTitle(Constants.TITLE);
         stage.setMinWidth(Constants.MAIN_PAGE_MIN_WIDTH);
         stage.setMinHeight(Constants.MAIN_PAGE_MIN_HEIGHT);
