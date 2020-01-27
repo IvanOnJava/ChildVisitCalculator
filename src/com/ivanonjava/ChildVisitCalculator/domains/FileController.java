@@ -31,7 +31,7 @@ public class FileController {
     }
 
     public static void writePatientsDiaryToFile(String beginDate, String endDate, int number) {
-        Date[] dates = CalendarController.getDays(beginDate, endDate);
+        ArrayList<Date> dates = CalendarController.getDaysWithoutWeekend(beginDate, endDate);
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Дневник");
         int rowNum = 0;

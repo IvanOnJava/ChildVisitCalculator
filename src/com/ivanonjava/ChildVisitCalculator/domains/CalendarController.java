@@ -3,6 +3,7 @@ package com.ivanonjava.ChildVisitCalculator.domains;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CalendarController {
@@ -139,7 +140,24 @@ public class CalendarController {
             return new Date(calendar.getTime().getTime());
         }
     }
+    static ArrayList<java.util.Date> getDaysWithoutWeekend(String b_date, String e_date){
+        Calendar calendar = Calendar.getInstance();
 
+        java.util.Date[] dates = getDays(b_date, e_date);
+        ArrayList<java.util.Date> result = new ArrayList<>();
+        for(java.util.Date date: dates){
+            calendar.clear();
+            calendar.setTime(date);
+            if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+                continue;
+            }
+            if(!DatabaseController.validateDayForPatient(new Date(calendar.getTime().getTime()))){
+                continue;
+            }
+            result.add(date);
+        }
+        return result;
+    }
     static Date[] getDays(String b_date, String e_date) {
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
