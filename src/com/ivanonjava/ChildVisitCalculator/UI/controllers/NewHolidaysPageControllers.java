@@ -1,82 +1,82 @@
 package com.ivanonjava.ChildVisitCalculator.UI.controllers;
 
 import com.ivanonjava.ChildVisitCalculator.domains.CalendarController;
-import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.pojo.Week;
+import com.sun.javafx.css.Style;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventDispatcher;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Cell;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class NewHolidaysPageControllers implements Initializable {
 
     public Text cellYEAR;
-    public TableView<Week> tableJan;
-    public TableView<Week> tableFeb;
-    public TableView<Week> tableMar;
-    public TableView<Week> tableApr;
-    public TableView<Week> tableMay;
-    public TableView<Week> tableJun;
-    public TableView<Week> tableJul;
-    public TableView<Week> tableAvg;
-    public TableView<Week> tableSep;
-    public TableView<Week> tableOct;
-    public TableView<Week> tableNov;
-    public TableView<Week> tableDec;
+    public GridPane gJan;
+    public GridPane gFeb;
+    public GridPane gMar;
+    public GridPane gApr;
+    public GridPane gMay;
+    public GridPane gJun;
+    public GridPane gJul;
+    public GridPane gAvg;
+    public GridPane gSep;
+    public GridPane gOct;
+    public GridPane gNov;
+    public GridPane gDec;
 
 
-    public void reduceYear(ActionEvent actionEvent) {
+    public void reduceYear() {
         cellYEAR.setText(String.valueOf(Integer.parseInt(cellYEAR.getText()) - 1));
-        update();
+        config();
     }
 
-    public void increaseYear(ActionEvent actionEvent) {
+    public void increaseYear() {
         cellYEAR.setText(String.valueOf(Integer.parseInt(cellYEAR.getText()) + 1));
-        update();
+        config();
     }
 
-    ObservableList<Week> weeks = FXCollections.observableArrayList();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        config(tableJan, tableFeb, tableMar, tableApr, tableMay, tableJun, tableJul, tableAvg, tableSep, tableOct, tableNov, tableDec);
-
+        config();
     }
-
-    @SafeVarargs
-    private final void config(TableView<Week>... tableMonth) {
-        for (TableView<Week> table : tableMonth) {
-
-            table.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("monday"));
-            table.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("tuesday"));
-            table.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("wednesday"));
-            table.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("thursday"));
-            table.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("friday"));
-            table.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("saturday"));
-            table.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("sunday"));
-
-
-        }
-        update();
+    private void config(){
+        update(gJan, gFeb, gMar, gApr, gMay, gJun, gJul, gAvg, gSep, gOct, gNov, gDec);
     }
+    private void update(GridPane... panes) {
+        int month = 0;
+        for(GridPane pane : panes){
+                pane.getChildren().clear();
+                pane.setGridLinesVisible(true);
 
-    private void update() {
-        setDays(tableJan, tableFeb, tableMar, tableApr, tableMay, tableJun, tableJul, tableAvg, tableSep, tableOct, tableNov, tableDec);
-    }
-
-    @SafeVarargs
-    private final void setDays(TableView<Week>... tables) {
-        int i = 0;
-        for (TableView<Week> table : tables) {
-            table.getItems().setAll(CalendarController.getDaysForMonth(i++, Integer.parseInt(cellYEAR.getText())));
+            ArrayList<Week> weeks = CalendarController.getDaysForMonth(month++, Integer.parseInt(cellYEAR.getText()));
+            for (int i = 0; i < weeks.size(); i++) {
+                pane.add(new Text(weeks.get(i).getMonday()), 0, i);
+                pane.add(new Text(weeks.get(i).getTuesday()), 1, i);
+                pane.add(new Text(weeks.get(i).getWednesday()), 2, i);
+                pane.add(new Text(weeks.get(i).getThursday()), 3, i);
+                pane.add(new Text(weeks.get(i).getFriday()), 4, i);
+                pane.add(new Text(weeks.get(i).getSaturday()), 5, i);
+                pane.add(new Text(weeks.get(i).getSunday()), 6, i);
+            }
+            pane.getChildren().forEach(node -> {
+                Text text = (Text) node;
+                if(text.getText().trim().equals("3"))
+                   ((Text) node).setStyle("-fx-text-fill: #f74948");
+            });
         }
 
     }
+
 }

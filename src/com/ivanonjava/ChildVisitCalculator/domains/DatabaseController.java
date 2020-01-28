@@ -83,7 +83,10 @@ public final class DatabaseController {
 
         return false;
     }
-
+    public static boolean isWeekend(String a) {
+       Date date = CalendarController.getDate(a);
+        return validateDayForPatient(date);
+    }
     private static boolean validateHoliday(Date day) {
         try {
             st = getConnect().createStatement();
