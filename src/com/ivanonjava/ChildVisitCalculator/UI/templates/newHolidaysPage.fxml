@@ -13,22 +13,24 @@
       <Text fx:id="cellYEAR" layoutX="359.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2019" textAlignment="CENTER" wrappingWidth="82.13671875" AnchorPane.leftAnchor="359.0" AnchorPane.rightAnchor="358.86328125" AnchorPane.topAnchor="17.0" />
       <Button layoutX="359.0" layoutY="14.0" mnemonicParsing="false" onAction="#reduceYear" text="&lt;" AnchorPane.leftAnchor="359.0" AnchorPane.topAnchor="14.0" />
       <Button layoutX="416.0" layoutY="14.0" mnemonicParsing="false" onAction="#increaseYear" text="&gt;" AnchorPane.rightAnchor="359.0" AnchorPane.topAnchor="14.0" />
-      <VBox layoutX="10.0" layoutY="45.0" prefHeight="190.0" prefWidth="780.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
+      <VBox layoutX="10.0" layoutY="51.0" prefHeight="539.0" prefWidth="780.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="51.0">
          <children>
             <HBox alignment="TOP_CENTER" prefHeight="160.0" prefWidth="780.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="TOP_CENTER" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Январь" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableJan" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableJan" editable="true" prefHeight="250.0" prefWidth="250.0" VBox.vgrow="ALWAYS">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="Пн" />
-                            <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+
+                            <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                            <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                             <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                             <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
+
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -39,18 +41,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Февраль" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableFeb" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableFeb" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -58,18 +60,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="630.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Март" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableMar" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableMar" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -77,18 +79,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="630.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Апрель" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableApr" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableApr" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -100,18 +102,18 @@
                   <VBox alignment="TOP_CENTER" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Май" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableMay" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableMay" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -119,18 +121,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Июнь" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableJun" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableJun" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -138,18 +140,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="630.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Июль" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableJul" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableJul" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -157,18 +159,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="630.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Август" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableAvg" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableAvg" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -180,18 +182,18 @@
                   <VBox alignment="TOP_CENTER" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Сентябрь" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableSep" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableSep" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -199,18 +201,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Октябрь" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableOct" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableOct" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -218,18 +220,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="630.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ноябрь" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableNov" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableNov" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>
@@ -237,18 +239,18 @@
                   <VBox alignment="TOP_CENTER" layoutX="630.0" layoutY="10.0" prefHeight="160.0" prefWidth="160.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Декабрь" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <TableView fx:id="tableDec" editable="true" prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tableDec" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Пн" />
-                              <TableColumn prefWidth="75.0" text="Вт" />
-                              <TableColumn prefWidth="75.0" text="Ср" />
-                              <TableColumn prefWidth="75.0" text="Чт" />
-                              <TableColumn prefWidth="75.0" text="Пт" />
-                              <TableColumn prefWidth="75.0" text="Сб" />
-                              <TableColumn prefWidth="75.0" text="Вс" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пн" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Ср" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Чт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Пт" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Сб" />
+                              <TableColumn prefWidth="75.0" sortable="false" text="Вс" />
                            </columns>
                         </TableView>
                      </children>

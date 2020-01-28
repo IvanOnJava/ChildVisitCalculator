@@ -2,6 +2,7 @@ package com.ivanonjava.ChildVisitCalculator.pojo;
 
 import javafx.beans.property.SimpleStringProperty;
 
+
 public class Week {
     SimpleStringProperty monday;
     SimpleStringProperty tuesday;
@@ -10,7 +11,15 @@ public class Week {
     SimpleStringProperty friday;
     SimpleStringProperty saturday;
     SimpleStringProperty sunday;
-
+    public Week(){
+        this.monday = new SimpleStringProperty("");
+        this.tuesday = new SimpleStringProperty("");
+        this.wednesday = new SimpleStringProperty("");
+        this.thursday = new SimpleStringProperty("");
+        this.friday = new SimpleStringProperty("");
+        this.saturday = new SimpleStringProperty("");
+        this.sunday = new SimpleStringProperty("");
+    }
     public Week(String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday) {
         this.monday = new SimpleStringProperty(monday);
         this.tuesday = new SimpleStringProperty(tuesday);
@@ -24,13 +33,13 @@ public class Week {
     @Override
     public String toString() {
         return "Week{" +
-                "monday=" + monday +
-                ", tuesday=" + tuesday +
-                ", wednesday=" + wednesday +
-                ", thursday=" + thursday +
-                ", friday=" + friday +
-                ", saturday=" + saturday +
-                ", sunday=" + sunday +
+                "monday=" + getMonday() +
+                ", tuesday=" + getTuesday() +
+                ", wednesday=" + getWednesday() +
+                ", thursday=" + getThursday() +
+                ", friday=" + getFriday() +
+                ", saturday=" + getSaturday() +
+                ", sunday=" + getSunday() +
                 '}';
     }
 
@@ -88,5 +97,60 @@ public class Week {
 
     public SimpleStringProperty sundayProperty() {
         return sunday;
+    }
+
+    public void setMonday(String monday) {
+        this.monday.set(monday);
+    }
+
+    public void setTuesday(String tuesday) {
+        this.tuesday.set(tuesday);
+    }
+
+    public void setWednesday(String wednesday) {
+        this.wednesday.set(wednesday);
+    }
+
+    public void setThursday(String thursday) {
+        this.thursday.set(thursday);
+    }
+
+    public void setFriday(String friday) {
+        this.friday.set(friday);
+    }
+
+    public void setSaturday(String saturday) {
+        this.saturday.set(saturday);
+    }
+
+    public void setSunday(String sunday) {
+        this.sunday.set(sunday);
+    }
+    public void setMonday(int monday) {
+        this.monday.set(String.valueOf(monday));
+    }
+
+    public void setTuesday(int tuesday) {
+        this.tuesday.set(String.valueOf(tuesday));
+    }
+
+    public void setWednesday(int wednesday) {
+        this.wednesday.set(String.valueOf(wednesday));
+    }
+
+    public void setThursday(int thursday) {
+        this.thursday.set(String.valueOf(thursday));
+    }
+
+    public void setFriday(int friday) {
+        this.friday.set(String.valueOf(friday));
+    }
+
+    public void setSaturday(int saturday) {
+        this.saturday.set(String.valueOf(saturday));
+    }
+
+    public void setSunday(int sunday) {
+        this.sunday.set(String.valueOf(sunday));
     }
 }
