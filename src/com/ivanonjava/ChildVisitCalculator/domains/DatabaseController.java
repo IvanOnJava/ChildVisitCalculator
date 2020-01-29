@@ -5,6 +5,7 @@ import com.ivanonjava.ChildVisitCalculator.pojo.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,10 +26,8 @@ public final class DatabaseController {
     }
 
     private DatabaseController() {
-         createConnect();
+        createConnect();
     }
-
-
 
 
     private void createConnect() {
@@ -43,8 +42,6 @@ public final class DatabaseController {
             e.printStackTrace();
         }
     }
-
-
 
 
     public static void Instantiate() {
@@ -83,10 +80,14 @@ public final class DatabaseController {
 
         return false;
     }
+
     public static boolean isWeekend(String a) {
-       Date date = CalendarController.getDate(a);
-        return validateDayForPatient(date);
+        Date date = CalendarController.getDate(a);
+        if (CalendarController.isWeekend(a) || !validateDayForPatient(date))
+            return true;
+        return false;
     }
+
     private static boolean validateHoliday(Date day) {
         try {
             st = getConnect().createStatement();
@@ -103,11 +104,30 @@ public final class DatabaseController {
     }
 
     private static void addHoliday(Date day) {
-
+        ArrayList<Integer> list = new ArrayList<>();
         try {
             ps = getConnect().prepareStatement("INSERT INTO holidays(day) VALUES (?)");
             ps.setDate(1, day);
             ps.executeUpdate();
+            st = getConnect().createStatement();
+            rs = st.executeQuery("SELECT * FROM days_tables");
+            while (rs.next()) {
+                for (int i = 2; i <= 16; i++) {
+                    if (rs.getDate(i).getTime() == day.getTime()) {
+                        list.add(rs.getInt(1));
+                    }
+                }
+            }
+            for (Integer integer : list) {
+                st = getConnect().createStatement();
+                rs = st.executeQuery("SELECT patients.birthday, patients.discardday, id_address FROM patients LEFT JOIN addInfo aI on patients.id = aI.patient_id WHERE id = " + integer);
+                rs.next();
+                PatientForDelta patient = new PatientForDelta(integer, new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate(1).getTime()), new SimpleDateFormat("dd.MM.yyyy").format(rs.getDate(2).getTime()), rs.getInt(3));
+                ps = connect.prepareStatement("DELETE FROM days_tables WHERE patient_id = (?)");
+                ps.setInt(1, patient.getId());
+                ps.executeUpdate();
+                addTableForPatient(patient.getId(), patient.getBirthday(), patient.getDiscardday(), patient.getId_adr());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -116,17 +136,19 @@ public final class DatabaseController {
 
     }
 
-    public static void removeHolidays(String date) {
+    public static boolean removeHolidays(String date) {
         try {
             Date day = CalendarController.getDate(date);
             ps = getConnect().prepareStatement("DELETE FROM holidays WHERE day = (?)");
             ps.setDate(1, day);
             ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closeStatement(ps);
         }
+        return false;
     }
 
     public static ArrayList<java.util.Date> getHolidays(boolean year, boolean month) {
@@ -182,7 +204,6 @@ public final class DatabaseController {
             rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 int id = rs.getInt(1);
-                System.out.println(id);
                 addInfoForPatient(id, patient);
             }
         } catch (SQLException e) {
@@ -228,7 +249,7 @@ public final class DatabaseController {
         try {
             closeStatement(rs, ps, st);
             Date[] days = CalendarController.getVisitDays(birthday, discardDay, id_adr);
-            System.out.println(Arrays.toString(days));
+
             st = getConnect().createStatement();
             st.executeUpdate("INSERT INTO days_tables(" +
                     "PATIENT_ID, ONE_DAY, THREE_DAY, TWO_WEEKS, " +
@@ -245,10 +266,10 @@ public final class DatabaseController {
         }
 
     }
-
+    /*
     private static void addTableForPatients() {
         try {
-            ps = getConnect().prepareStatement("SELECT id, birthday, discardday, number FROM patients LEFT JOIN days_tables ON patients.id = days_tables.patient_id LEFT JOIN addresses WHERE patient_id IS NULL");
+            ps = getConnect().prepareStatement("SELECT id, birthday, discardday, number, patient_id FROM patients LEFT JOIN days_tables ON patients.id = days_tables.patient_id LEFT JOIN addresses WHERE patient_id IS NULL");
             rs = ps.executeQuery();
             ArrayList<Integer> id_patients = new ArrayList<>();
             ArrayList<String> birthdays = new ArrayList<>();
@@ -284,7 +305,7 @@ public final class DatabaseController {
             closeStatement(rs, st, ps);
         }
 
-    }
+    }*/
 
     static boolean validateDayForPatient(Date date) {
 
@@ -309,10 +330,6 @@ public final class DatabaseController {
                 ps.setDate(i + 2, CalendarController.getDate(date.toString()));
             rs = ps.executeQuery();
             if (rs.next()) {
-                if (rs.getInt(1) >= Constants.MAX_PATIENTS)
-                    System.out.println("День переполнен");
-                else
-                    System.out.println("День свободен");
                 return rs.getInt(1) >= Constants.MAX_PATIENTS;
             } else {
                 return false;
@@ -456,7 +473,7 @@ public final class DatabaseController {
             selectPatientForPatronage(listPatient);
         } catch (SQLException e) {
             e.printStackTrace();
-            addTableForPatients();
+            //addTableForPatients();
         } finally {
             closeStatement(rs, ps);
         }
@@ -645,7 +662,7 @@ public final class DatabaseController {
         return list;
     }
 
-    public static int getNumberForAdress(String address){
+    public static int getNumberForAdress(String address) {
         try {
             st = getConnect().createStatement();
             rs = st.executeQuery("SELECT number FROM addresses WHERE addresses.address =\"" + address + "\"");
@@ -656,6 +673,7 @@ public final class DatabaseController {
         }
         return 1;
     }
+
     public static ArrayList<Integer> getAllNumber() {
         ArrayList<Integer> numbers = new ArrayList<>();
         try {
@@ -1110,6 +1128,7 @@ public final class DatabaseController {
         }
         return false;
     }
+
     public static boolean updatePatientThreeDay(int id, String threeDay) {
         try {
             ps = getConnect().prepareStatement("UPDATE days_tables SET one_day = (?) WHERE patient_id = (?)");
@@ -1162,7 +1181,7 @@ public final class DatabaseController {
     }
 
     public static void setSortAction(String sortAction, boolean isAskType) {
-        System.out.println(sortAction + " " + isAskType);
+
         DatabaseController.sortAction = sortAction;
         DatabaseController.sortAsk = isAskType;
     }

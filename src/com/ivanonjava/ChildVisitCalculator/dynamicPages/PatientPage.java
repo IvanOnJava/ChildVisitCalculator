@@ -145,6 +145,7 @@ public class PatientPage extends Stage {
                         discardDay.getEditor(), discardWeight, diagnose, dateNBO.getEditor(), dateAUDIO.getEditor(),
                         dateBCJ.getEditor(), serialBCJ, dateGEP.getEditor(), serialGEP, roddom, helper);
                 DocumentPageControllers.update();
+                DocumentPageControllers.reopen();
             }
         });
 

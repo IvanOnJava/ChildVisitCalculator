@@ -3,11 +3,13 @@
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#08fff6, #101af7);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
+
 .button:hover {
     -fx-background-color: linear-gradient(#2A5058, #61a2b1);
 }
-.text-field{
+
+.text-field {
     -fx-font-family: "Arial";
 }

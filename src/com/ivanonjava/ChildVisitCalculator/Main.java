@@ -19,10 +19,10 @@ public class Main extends Application {
 
     private static Stage stage;
 
-    private static final String TEMPLATES_URL = "UI/templates/";
-    private static final String POST_F = "Page.fxml";
+
 
     public static void main(String[] args) {
+
         CalendarController.Instantiate();
         DatabaseController.Instantiate();
         FileController.Instantiate();
@@ -33,7 +33,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource(String.format("%s%s%s", TEMPLATES_URL, "newHolidays", POST_F)));
+        Parent root = FXMLLoader.load(getClass().getResource(Pages.MAIN.toString()));
         stage.setTitle(Constants.TITLE);
         stage.setMinWidth(Constants.MAIN_PAGE_MIN_WIDTH);
         stage.setMinHeight(Constants.MAIN_PAGE_MIN_HEIGHT);
@@ -47,20 +47,31 @@ public class Main extends Application {
     public static void setDocumentPage() {
 
         stage.setResizable(true);
+
         stage.setMinWidth(Constants.DOCUMENT_PAGE_MIN_WIDTH);
         stage.setMinHeight(Constants.DOCUMENT_PAGE_MIN_HEIGHT);
-        setPage("document");
+        stage.setMaxHeight(Double.MAX_VALUE);
+        stage.setMaxWidth(Double.MAX_VALUE);
+        setPage(Pages.DOCUMENT);
+        stage.setMaximized(true);
     }
 
     public static void setHolidaysPage() {
+        stage.setResizable(false);
 
-        setPage("holidays");
+        setPage(Pages.HOLIDAYS);
+        stage.setMinHeight(600);
+        stage.setMinWidth(800);
+        stage.setMaxHeight(600);
+        stage.setMinWidth(800);
+        stage.setMaximized(false);
+
     }
 
-    private static void setPage(String page) {
+    private static void setPage(Enum<Pages> page) {
 
 
-        String str = String.format("%s%s%s", TEMPLATES_URL, page, POST_F);
+        String str = page.toString();
         try {
             Parent root = FXMLLoader.load(Main.class.getResource(str));
             stage.setScene(new Scene(root));

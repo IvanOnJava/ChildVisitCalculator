@@ -4,17 +4,20 @@
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#0d0f39, #f74948);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
+
 .button:hover {
     -fx-background-color: linear-gradient(#f74948, #51177a);
     -fx-cursor: hand;
 }
-.menu-button{
+
+.menu-button {
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#51177a, #f74948);
 }
+
 .menu-button:hover {
     -fx-background-color: linear-gradient(#f74948, #51177a);
     -fx-cursor: hand;

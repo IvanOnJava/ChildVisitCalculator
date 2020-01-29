@@ -11,7 +11,8 @@ public class Week {
     SimpleStringProperty friday;
     SimpleStringProperty saturday;
     SimpleStringProperty sunday;
-    public Week(){
+
+    public Week() {
         this.monday = new SimpleStringProperty("");
         this.tuesday = new SimpleStringProperty("");
         this.wednesday = new SimpleStringProperty("");
@@ -19,15 +20,6 @@ public class Week {
         this.friday = new SimpleStringProperty("");
         this.saturday = new SimpleStringProperty("");
         this.sunday = new SimpleStringProperty("");
-    }
-    public Week(String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday) {
-        this.monday = new SimpleStringProperty(monday);
-        this.tuesday = new SimpleStringProperty(tuesday);
-        this.wednesday = new SimpleStringProperty(wednesday);
-        this.thursday = new SimpleStringProperty(thursday);
-        this.friday = new SimpleStringProperty(friday);
-        this.saturday = new SimpleStringProperty(saturday);
-        this.sunday = new SimpleStringProperty(sunday);
     }
 
     @Override
@@ -126,6 +118,7 @@ public class Week {
     public void setSunday(String sunday) {
         this.sunday.set(sunday);
     }
+
     public void setMonday(int monday) {
         this.monday.set(String.valueOf(monday));
     }

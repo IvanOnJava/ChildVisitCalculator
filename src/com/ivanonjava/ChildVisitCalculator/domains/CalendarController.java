@@ -1,7 +1,6 @@
 package com.ivanonjava.ChildVisitCalculator.domains;
 
 import com.ivanonjava.ChildVisitCalculator.pojo.Week;
-import javafx.collections.ObservableList;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -205,7 +204,7 @@ public class CalendarController {
             Calendar cal2 = Calendar.getInstance();
             cal2.clear();
             cal2.setTime(cal1.getTime());
-            while(cal2.get(Calendar.WEEK_OF_MONTH) == cal1.get(Calendar.WEEK_OF_MONTH)){
+            while (cal2.get(Calendar.WEEK_OF_MONTH) == cal1.get(Calendar.WEEK_OF_MONTH)) {
                 int i1 = cal1.get(Calendar.DAY_OF_WEEK);
                 if (i1 == Calendar.MONDAY) {
                     week.setMonday(cal1.get(Calendar.DAY_OF_MONTH));
@@ -227,8 +226,16 @@ public class CalendarController {
             }
             list.add(week);
         }
-
-        System.out.println(list.size());
         return list;
+    }
+
+    public static boolean isWeekend(String a) {
+        int day = Integer.parseInt(a.trim().split("\\.")[0]);
+        int month = Integer.parseInt(a.trim().split("\\.")[1]) - 1;
+        int year = Integer.parseInt(a.trim().split("\\.")[2]);
+        Calendar calWeekend = Calendar.getInstance();
+        calWeekend.clear();
+        calWeekend.set(year, month, day);
+        return calWeekend.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calWeekend.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
     }
 }

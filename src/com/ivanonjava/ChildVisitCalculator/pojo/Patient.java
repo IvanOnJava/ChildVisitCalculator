@@ -125,6 +125,7 @@ public class Patient {
     public String getKv() {
         return kv;
     }
+    public Patient(){}
 
     @Override
     public String toString() {

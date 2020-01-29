@@ -72,6 +72,8 @@ public final class Constants {
     public static final String NAME_DB_DISCARDDAY = "discardday";
     public static final String NAME_DB_STREET = "address";
 
+    public static final String TEMPLATES_URL = "UI/templates/";
+    public static final String POST_F = "Page.fxml";
 
     private Constants() {
     }

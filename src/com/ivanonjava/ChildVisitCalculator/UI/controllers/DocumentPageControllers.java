@@ -37,7 +37,8 @@ public class DocumentPageControllers implements Initializable {
     public DatePicker saveEndDate;
     private Tooltip tooltip = new Tooltip("Обновить таблицы");
 
-    private static List<DocumentTable> listTables = new ArrayList<>();
+    private static List<DocumentTable<?>> listTables = new ArrayList<>();
+    private static PatientPage page;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -86,8 +87,13 @@ public class DocumentPageControllers implements Initializable {
         createAllTables();
     }
 
+    public static void reopen() {
+        page.close();
+        new DocumentPageControllers().openAddPatient();
+    }
+
     public void openAddPatient() {
-        PatientPage page = new PatientPage();
+        page = new PatientPage();
         page.initModality(Modality.NONE);
         page.initOwner(Main.getStage());
         page.show();
@@ -142,7 +148,7 @@ public class DocumentPageControllers implements Initializable {
     public void saveDocuments() {
         if (getDate(saveBeginDate).trim().equalsIgnoreCase("") || getDate(saveEndDate).trim().equalsIgnoreCase(""))
             return;
-        for (DocumentTable table : listTables) {
+        for (DocumentTable<?> table : listTables) {
             table.saveDocument(getDate(saveBeginDate), getDate(saveEndDate));
         }
     }
@@ -179,5 +185,9 @@ public class DocumentPageControllers implements Initializable {
 
     public void hideUpdateTooltip() {
         tooltip.hide();
+    }
+
+    public void openCalendar() {
+        Main.setHolidaysPage();
     }
 }

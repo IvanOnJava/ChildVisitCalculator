@@ -1,7 +1,18 @@
+
 .button {
-    -fx-text-fill: white;
-    -fx-font-family: "Arial Narrow";
-    -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#08fff6, #101af7);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: black;
+    -fx-background-color: radial-gradient(radius 180%, burlywood, firebrick, white);
+}
+
+.button:hover {
+    -fx-cursor: hand;
+}
+
+.menu-button {
+    -fx-background-color: linear-gradient(#51177a, #f74948);
+}
+
+.menu-button:hover {
+    -fx-background-color: linear-gradient(#f74948, #51177a);
+    -fx-cursor: hand;
 }
