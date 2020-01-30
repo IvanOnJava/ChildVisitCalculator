@@ -4,7 +4,9 @@ import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
+import com.ivanonjava.ChildVisitCalculator.helpers.Reasons;
 import com.ivanonjava.ChildVisitCalculator.pojo.Patient;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -90,7 +92,7 @@ public class PatientPage extends Stage {
 
         dateBCJ = getDatePicker("Дата БЦЖ");
         serialBCJ = getTextField("Серия БЦЖ");
-
+        serialBCJ.setTooltip(tooltipSerialBCJ);
         dateGEP = getDatePicker("Дата гепатита");
         serialGEP = getTextField("Серия гепатита");
 
@@ -105,7 +107,7 @@ public class PatientPage extends Stage {
             if (fullName.getText().length() > 0 &&
                     address_text.getText().length() > 2 &&
                     birthday.getEditor().getText().length() > 5 &&
-                    discardDay.getEditor().getText().length() > 5 && !gender.getText().trim().equalsIgnoreCase("")) {
+                    discardDay.getEditor().getText().length() > 5 && !gender.getText().trim().equalsIgnoreCase("") && check(serialBCJ.getText())) {
                 DatabaseController.addPatient(
                         new Patient(
                                 getText(fullName),
@@ -132,14 +134,25 @@ public class PatientPage extends Stage {
                 );
                 tuber.setSelected(false);
                 gender.setText("");
-                clear(fullName, address_text, kv, phone, birthday.getEditor(), birthdayWeight, birthdayHeight,
+                /*clear(fullName, address_text, kv, phone, birthday.getEditor(), birthdayWeight, birthdayHeight,
                         discardDay.getEditor(), discardWeight, diagnose, dateNBO.getEditor(), dateAUDIO.getEditor(),
-                        dateBCJ.getEditor(), serialBCJ, dateGEP.getEditor(), serialGEP, roddom, helper);
+                        dateBCJ.getEditor(), serialBCJ, dateGEP.getEditor(), serialGEP, roddom, helper);*/
                 DocumentPageControllers.update();
                 DocumentPageControllers.reopen();
             }
         });
 
+    }
+
+    boolean check(String text){
+        boolean c = DocumentPageControllers.checkSerial(text);
+        if(!c){
+            Point2D point = serialBCJ.localToScreen(serialBCJ.getLayoutBounds().getMaxX(), serialBCJ.getLayoutBounds().getMaxY());
+            serialBCJ.setTooltip(tooltipSerialBCJ);
+            if(!tooltipSerialBCJ.isShowing())
+               tooltipSerialBCJ.show(serialBCJ, point.getX(), point.getY());
+        }
+        return c;
     }
 
     @SafeVarargs
@@ -153,9 +166,9 @@ public class PatientPage extends Stage {
     private <T extends TextInputControl> String getText(T node) {
         return node.getText().trim();
     }
-
+    Tooltip tooltipSerialBCJ;
     public PatientPage() {
-
+        tooltipSerialBCJ = new Tooltip(Constants.TOOLTIP_SERIAL_PATIENTPAGE);
 
         getIcons().add(new Image(Constants.PATH_ICON_ADD_PATIENT));
         configButton();

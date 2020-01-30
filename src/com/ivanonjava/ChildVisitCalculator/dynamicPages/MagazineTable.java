@@ -6,12 +6,15 @@ import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.domains.FileController;
 import com.ivanonjava.ChildVisitCalculator.pojo.PatientForMagazine;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -40,10 +43,10 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
         configTable();
     }
 
-
+    Tooltip serialBCJTooltip;
     @Override
     void configTable() {
-
+        serialBCJTooltip = new Tooltip(Constants.TOOLTIP_SERIAL_PATIENTPAGE);
         super.patientsList.setAll(DatabaseController.getPatientsForMagazine());
         super.configDocumentTable();
         t_twoW.setCellValueFactory(new PropertyValueFactory<>("twoWeeks"));
@@ -108,7 +111,9 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
 
         t_serialBCJ.setCellValueFactory(new PropertyValueFactory<>("serialBCJ"));
         t_serialBCJ.setOnEditCommit(this::editColumnSerialBCJ);
-
+        t_serialBCJ.setOnEditStart(event -> {
+           serialBCJTooltip.show(this, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y + 20);
+        });
         t_GEP.setCellValueFactory(new PropertyValueFactory<>("dateGEP"));
         t_GEP.setOnEditCommit(this::editColumnDateGEP);
 
@@ -128,6 +133,9 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
         this.getColumns().add(t_num);
         this.setItems(patientsList);
     }
+
+
+
     private void editColumnThreeWeeks(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
         event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setThreeWeeks(event.getNewValue());
@@ -178,8 +186,11 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
     }
 
     private void editColumnSerialBCJ(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
-        event.getTableView().getItems().get(
-                event.getTablePosition().getRow()).setSerialBCJ(event.getNewValue());
+        if(DocumentPageControllers.checkSerial(event.getNewValue())){
+            event.getTableView().getItems().get(
+                    event.getTablePosition().getRow()).setSerialBCJ(event.getNewValue());
+        }
+        serialBCJTooltip.hide();
         updated();
     }
 
@@ -234,11 +245,10 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
         boolean check = DocumentPageControllers.check;
         if (!search.equalsIgnoreCase("null") && begin.trim().length() > 6) {
             super.patientsList.setAll(DatabaseController.getPatientsForMagazine(search, check, begin, end));
-            super.patientsList.sorted();
         } else {
             super.patientsList.setAll(DatabaseController.getPatientsForMagazine());
-            super.patientsList.sorted();
         }
+        super.patientsList.sorted();
         updateAddresses();
     }
 

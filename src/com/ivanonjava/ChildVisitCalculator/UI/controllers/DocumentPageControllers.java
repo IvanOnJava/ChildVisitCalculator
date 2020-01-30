@@ -7,6 +7,7 @@ import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.domains.FileController;
 import com.ivanonjava.ChildVisitCalculator.dynamicPages.*;
 import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
+import com.ivanonjava.ChildVisitCalculator.helpers.Reasons;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -197,5 +198,16 @@ public class DocumentPageControllers implements Initializable {
 
     public void openCalendar() {
         Main.setHolidaysPage();
+    }
+
+    public static boolean checkSerial(String text) {
+        try {
+            Integer.parseInt(text);
+            return true;
+        }catch (Exception e){
+            return text.trim().equalsIgnoreCase(Reasons.MED.getReasons()) ||
+                    text.trim().equalsIgnoreCase(Reasons.REFUSAL.getReasons()) ||
+                    text.trim().equalsIgnoreCase(Reasons.NULL.getReasons());
+        }
     }
 }

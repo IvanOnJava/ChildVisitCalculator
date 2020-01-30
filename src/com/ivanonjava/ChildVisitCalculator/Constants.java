@@ -1,4 +1,7 @@
 package com.ivanonjava.ChildVisitCalculator;
+
+import com.ivanonjava.ChildVisitCalculator.helpers.Reasons;
+
 public final class Constants {
     public static final String AUTHOR = "Saint-Petersburg©Ivan Povoyko 2019";
     public static final String LANGUAGE = "Java 1.8.0_221 SE";
@@ -11,7 +14,7 @@ public final class Constants {
     public static final String DOCUMENT_FILE_PATH = System.getProperty("user.home") + "/Desktop/Patron/";
     public static final String PATH_ICON_ADDRESS = "com/ivanonjava/ChildVisitCalculator/UI/templates/css/images/addresses.png";
     public static final String PATH_ICON_RELOAD = "com/ivanonjava/ChildVisitCalculator/UI/templates/css/images/reload.png";
-    public static final String PATH_ICON_INFO =  "com/ivanonjava/ChildVisitCalculator/UI/templates/css/images/icoInfo.png";
+    public static final String PATH_ICON_INFO = "com/ivanonjava/ChildVisitCalculator/UI/templates/css/images/icoInfo.png";
 
     public static final String PATH_ICON_ADD_PATIENT = "com/ivanonjava/ChildVisitCalculator/UI/templates/css/images/addPatient.png";
     public static final String DATE_PATTERN = "dd.MM.yyyy";
@@ -76,6 +79,7 @@ public final class Constants {
     public static final String POST_F = "Page.fxml";
     public static final String TAB_MAGAZINE_NAME = "Журнал новорождёных";
     public static final String TAB_PATRONAGE_NAME = "Патронаж №";
+    public static final String TOOLTIP_SERIAL_PATIENTPAGE = "Укажите серию, ключевое слово [" + Reasons.MED.getReasons() + ", " + Reasons.REFUSAL.getReasons() + "] или оставьте пустым";
 
     private Constants() {
     }
