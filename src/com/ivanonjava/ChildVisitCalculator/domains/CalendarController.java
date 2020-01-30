@@ -1,5 +1,6 @@
 package com.ivanonjava.ChildVisitCalculator.domains;
 
+import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.pojo.Week;
 
 import java.sql.Date;
@@ -27,12 +28,8 @@ public class CalendarController {
 
     public static Date getNow() {
         LocalDate localDate = LocalDate.now();
-        String now = DateTimeFormatter.ofPattern("dd.MM.yyyy").format(localDate);
+        String now = DateTimeFormatter.ofPattern(Constants.DATE_PATTERN).format(localDate);
         return getDate(now);
-    }
-
-    public static String getTime() {
-        return " " + Calendar.getInstance().getTime().toString();
     }
 
     static Date getDate(String day) {
@@ -78,14 +75,6 @@ public class CalendarController {
         }
     }
 
-    static Date getDatePlusMonth(String dates, int i) {
-        calendar.clear();
-        int[] data = replaceDay(dates);
-        calendar.set(data[0], data[1], data[2]);
-        calendar.add(Calendar.MONTH, i);
-        return new Date(calendar.getTime().getTime());
-    }
-
     public static Date[] getVisitDays(String birthday, String discardDay, int id_table) {
         java.sql.Date[] dates = new java.sql.Date[15];
         memoryFlag = true;
@@ -121,7 +110,7 @@ public class CalendarController {
                 calendar.add(Calendar.DAY_OF_YEAR, 1);
                 continue;
             }
-            if (!DatabaseController.validateDayForPatient(new Date(calendar.getTime().getTime()))) {
+            if (DatabaseController.validateDayForPatient(new Date(calendar.getTime().getTime()))) {
                 if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
                     calendar.add(Calendar.DAY_OF_YEAR, 1);
                 }
@@ -157,7 +146,7 @@ public class CalendarController {
             if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                 continue;
             }
-            if (!DatabaseController.validateDayForPatient(new Date(calendar.getTime().getTime()))) {
+            if (DatabaseController.validateDayForPatient(new Date(calendar.getTime().getTime()))) {
                 continue;
             }
             result.add(date);

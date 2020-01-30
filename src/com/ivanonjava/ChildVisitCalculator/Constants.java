@@ -74,6 +74,8 @@ public final class Constants {
 
     public static final String TEMPLATES_URL = "UI/templates/";
     public static final String POST_F = "Page.fxml";
+    public static final String TAB_MAGAZINE_NAME = "Журнал новорождёных";
+    public static final String TAB_PATRONAGE_NAME = "Патронаж №";
 
     private Constants() {
     }

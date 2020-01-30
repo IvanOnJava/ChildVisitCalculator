@@ -2,6 +2,7 @@ package com.ivanonjava.ChildVisitCalculator.UI.controllers;
 
 import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.Main;
+import com.ivanonjava.ChildVisitCalculator.Pages;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.domains.FileController;
 import com.ivanonjava.ChildVisitCalculator.dynamicPages.*;
@@ -56,13 +57,13 @@ public class DocumentPageControllers implements Initializable {
     private void createAllTables() {
         TabPane.getTabs().clear();
         listTables.clear();
-        Tab MagazineTab = new Tab("Журнал новорождёных");
+        Tab MagazineTab = new Tab(Constants.TAB_MAGAZINE_NAME);
         MagazineTable mTable = new MagazineTable();
         MagazineTab.setContent(mTable);
         TabPane.getTabs().add(MagazineTab);
         listTables.add(mTable);
         for (int i : DatabaseController.getAllNumber()) {
-            Tab tab = new Tab("Патронаж №" + i);
+            Tab tab = new Tab(Constants.TAB_PATRONAGE_NAME + i);
             PatronageTable table = new PatronageTable(i);
             tab.setContent(table);
             TabPane.getTabs().add(tab);
@@ -89,14 +90,21 @@ public class DocumentPageControllers implements Initializable {
 
     public static void reopen() {
         page.close();
-        new DocumentPageControllers().openAddPatient();
+        openAddPatientPage();
     }
 
-    public void openAddPatient() {
+    private static void openAddPatientPage() {
         page = new PatientPage();
         page.initModality(Modality.NONE);
         page.initOwner(Main.getStage());
         page.show();
+    }
+
+    public void openAddPatient() {
+        if (page == null)
+            openAddPatientPage();
+        else
+            reopen();
     }
 
     private void selectByAction(String action) {

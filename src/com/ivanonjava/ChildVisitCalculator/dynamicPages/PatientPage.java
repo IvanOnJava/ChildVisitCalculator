@@ -2,31 +2,22 @@ package com.ivanonjava.ChildVisitCalculator.dynamicPages;
 
 import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
-import com.ivanonjava.ChildVisitCalculator.domains.CalendarController;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
 import com.ivanonjava.ChildVisitCalculator.pojo.Patient;
-import javafx.event.ActionEvent;
-import javafx.event.EventType;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class PatientPage extends Stage {
-    private HBox box;
-    private VBox vBoxLeft;
-    private VBox vBoxRight;
     private TextField fullName;
 
     private TextField address_text;
@@ -78,7 +69,7 @@ public class PatientPage extends Stage {
 
         birthday = getDatePicker("Дата рождения");
         birthday.setEditable(false);
-        birthday.setOnAction(this::test);
+
         gender = new MenuButton();
         gender.getItems().addAll(getGenders());
 
@@ -88,7 +79,7 @@ public class PatientPage extends Stage {
 
         discardDay = getDatePicker("Дата выписки");
         discardDay.setEditable(false);
-        discardDay.setOnAction(this::test);
+
         discardWeight = getTextField("Вес при выписке(г)");
 
         diagnose = getTextField("Диагноз");
@@ -151,19 +142,6 @@ public class PatientPage extends Stage {
 
     }
 
-    private void test(ActionEvent actionEvent) {
-
-        if(discardDay.getEditor().getText().trim().length() > 5 & birthday.getEditor().getText().trim().length() > 5 && address_text.getText().trim().length() > 5){
-            vBoxRight.getChildren().clear();
-            java.util.Date[] dates =  CalendarController.getVisitDays(birthday.getEditor().getText(), discardDay.getEditor().getText(), DatabaseController.getNumberForAdress(address_text.getText()));
-            vBoxRight.getChildren().add(new Separator(Orientation.HORIZONTAL));
-            for(java.util.Date date : dates){
-                vBoxRight.getChildren().addAll(new Text(date.toString()), new Separator(Orientation.HORIZONTAL));
-            }
-        }
-    }
-
-
     @SafeVarargs
     private final <T extends TextInputControl> void clear(T... nodes) {
         for (T node : nodes) {
@@ -178,11 +156,10 @@ public class PatientPage extends Stage {
 
     public PatientPage() {
 
-        box = new HBox();
+
         getIcons().add(new Image(Constants.PATH_ICON_ADD_PATIENT));
         configButton();
-        vBoxLeft = new VBox();
-        vBoxRight = new VBox();
+        VBox vBoxLeft = new VBox();
         vBoxLeft.getChildren().addAll(
                 new Separator(),
                 getControl("ФИО                 ", fullName),
@@ -223,14 +200,12 @@ public class PatientPage extends Stage {
                 getControl("", buttonAdd)
         );
         vBoxLeft.setSpacing(1.0);
-        box.setMinSize(500, 500);
+
         fullName.setMinWidth(220);
         address_text.setMinWidth(220);
         roddom.setMinWidth(220);
         helper.setMinWidth(220);
-
-        box.getChildren().addAll(new Separator(Orientation.VERTICAL),vBoxLeft, new Separator(Orientation.VERTICAL), vBoxRight,new Separator(Orientation.VERTICAL));
-        Scene scene = new Scene(box);
+        Scene scene = new Scene(vBoxLeft);
         setMinHeight(600);
         setMinWidth(400);
         buttonAdd.setAlignment(Pos.CENTER);

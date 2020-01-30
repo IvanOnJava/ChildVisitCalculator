@@ -7,7 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,16 +48,6 @@ public final class DatabaseController {
                 new DatabaseController() : instance;
     }
 
-    public static boolean addHolidays(String b_date, String e_date) {
-        Date[] days = CalendarController.getDays(b_date, e_date);
-        for (Date day : days) {
-            if (validateHoliday(day)) {
-                addHoliday(day);
-            }
-        }
-        return true;
-    }
-
 
     public static boolean addHolidays(String dates, boolean everyYear) {
 
@@ -83,9 +72,7 @@ public final class DatabaseController {
 
     public static boolean isWeekend(String a) {
         Date date = CalendarController.getDate(a);
-        if (CalendarController.isWeekend(a) || !validateDayForPatient(date))
-            return true;
-        return false;
+        return CalendarController.isWeekend(a) || validateDayForPatient(date);
     }
 
     private static boolean validateHoliday(Date day) {
@@ -149,39 +136,6 @@ public final class DatabaseController {
             closeStatement(ps);
         }
         return false;
-    }
-
-    public static ArrayList<java.util.Date> getHolidays(boolean year, boolean month) {
-        ArrayList<java.util.Date> listHolidays = new ArrayList<>();
-        if (year || month) {
-            try {
-                ps = getConnect().prepareStatement("SELECT day from holidays WHERE day >= (?) AND day <= (?) ORDER BY day");
-                ps.setDate(1, CalendarController.getNow());
-                if (year)
-                    ps.setDate(2, CalendarController.getDatePlusYear(CalendarController.getNow().toString(), 1));
-                if (month)
-                    ps.setDate(2, CalendarController.getDatePlusMonth(CalendarController.getNow().toString(), 1));
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    listHolidays.add(rs.getDate(1));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            try {
-                st = getConnect().createStatement();
-                rs = st.executeQuery("SELECT day FROM holidays ORDER BY day");
-                while (rs.next()) {
-                    listHolidays.add(rs.getDate(1));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        closeStatement(rs, st, ps);
-        return listHolidays;
     }
 
     public static void addPatient(Patient patient) {
@@ -266,50 +220,10 @@ public final class DatabaseController {
         }
 
     }
-    /*
-    private static void addTableForPatients() {
-        try {
-            ps = getConnect().prepareStatement("SELECT id, birthday, discardday, number, patient_id FROM patients LEFT JOIN days_tables ON patients.id = days_tables.patient_id LEFT JOIN addresses WHERE patient_id IS NULL");
-            rs = ps.executeQuery();
-            ArrayList<Integer> id_patients = new ArrayList<>();
-            ArrayList<String> birthdays = new ArrayList<>();
-            ArrayList<String> discarddays = new ArrayList<>();
-            ArrayList<Integer> id_table = new ArrayList<>();
-            while (rs.next()) {
-                id_patients.add(rs.getInt(1));
-                birthdays.add(rs.getDate(2).toString());
-                discarddays.add(rs.getDate(3).toString());
-                id_table.add(rs.getInt(4));
-            }
-            ps.close();
-            rs.close();
-            if (!id_patients.isEmpty()) {
-                for (int i = 0; i < id_patients.size(); i++) {
-                    try {
-                        ps = getConnect().prepareStatement("INSERT INTO days_tables (patient_id, one_day, three_day, two_weeks, three_weeks, one_month, two_months, three_months, four_months, five_months, six_months, seven_months, eight_months, nine_months, ten_months, eleven_months) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                        ps.setInt(1, id_patients.get(i));
-                        Date[] days = CalendarController.getVisitDays(birthdays.get(i), discarddays.get(i), id_table.get(i));
-                        for (int j = 0; j < days.length; j++) {
-                            ps.setDate(j + 2, days[j]);
-                        }
-                        ps.executeUpdate();
-                    } catch (SQLException e) {
-
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeStatement(rs, st, ps);
-        }
-
-    }*/
 
     static boolean validateDayForPatient(Date date) {
 
-        return validateHoliday(date);
+        return !validateHoliday(date);
     }
 
 
@@ -338,24 +252,6 @@ public final class DatabaseController {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public static ArrayList<java.util.Date> getHolidays(String begin, String end) {
-        ArrayList<java.util.Date> listHolidays = new ArrayList<>();
-        try {
-            ps = getConnect().prepareStatement("SELECT day from holidays WHERE day >= (?) AND day <= (?) ORDER BY day");
-            ps.setDate(1, CalendarController.getDate(begin));
-            ps.setDate(2, CalendarController.getDate(end));
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                listHolidays.add(rs.getDate(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeStatement(rs, ps);
-        }
-        return listHolidays;
     }
 
     public static void deletePatient(int patient_id) {
@@ -662,18 +558,6 @@ public final class DatabaseController {
         return list;
     }
 
-    public static int getNumberForAdress(String address) {
-        try {
-            st = getConnect().createStatement();
-            rs = st.executeQuery("SELECT number FROM addresses WHERE addresses.address =\"" + address + "\"");
-            rs.next();
-            return rs.getInt(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 1;
-    }
-
     public static ArrayList<Integer> getAllNumber() {
         ArrayList<Integer> numbers = new ArrayList<>();
         try {
@@ -726,6 +610,7 @@ public final class DatabaseController {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
@@ -1131,7 +1016,7 @@ public final class DatabaseController {
 
     public static boolean updatePatientThreeDay(int id, String threeDay) {
         try {
-            ps = getConnect().prepareStatement("UPDATE days_tables SET one_day = (?) WHERE patient_id = (?)");
+            ps = getConnect().prepareStatement("UPDATE days_tables SET three_day = (?) WHERE patient_id = (?)");
             ps.setDate(1, CalendarController.getDate(threeDay));
             ps.setInt(2, id);
             ps.executeUpdate();

@@ -33,7 +33,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource(Pages.MAIN.toString()));
+        Parent root = FXMLLoader.load(getClass().getResource(Pages.getPage(Pages.MAIN)));
         stage.setTitle(Constants.TITLE);
         stage.setMinWidth(Constants.MAIN_PAGE_MIN_WIDTH);
         stage.setMinHeight(Constants.MAIN_PAGE_MIN_HEIGHT);
@@ -59,7 +59,7 @@ public class Main extends Application {
     public static void setHolidaysPage() {
         stage.setResizable(false);
 
-        setPage(Pages.HOLIDAYS);
+        setPage(Pages.newHOLIDAYS);
         stage.setMinHeight(600);
         stage.setMinWidth(800);
         stage.setMaxHeight(600);
@@ -68,10 +68,10 @@ public class Main extends Application {
 
     }
 
-    private static void setPage(Enum<Pages> page) {
+    private static void setPage(Pages page) {
 
 
-        String str = page.toString();
+        String str = Pages.getPage(page);
         try {
             Parent root = FXMLLoader.load(Main.class.getResource(str));
             stage.setScene(new Scene(root));
