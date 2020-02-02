@@ -1,12 +1,11 @@
 package com.ivanonjava.ChildVisitCalculator.dynamicPages;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.domains.FileController;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.pojo.PatientForMagazine;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.Tooltip;
@@ -19,24 +18,24 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public final class MagazineTable extends DocumentTable<PatientForMagazine> {
-    private TableColumn<PatientForMagazine, String> t_twoW = new TableColumn<>(Constants.NAME_TABLE_TWO_WEEKS);
-    private TableColumn<PatientForMagazine, String> t_threeW = new TableColumn<>(Constants.NAME_TABLE_THREE_WEEKS);
-    private TableColumn<PatientForMagazine, Boolean> t_sert = new TableColumn<>(Constants.NAME_TABLE_SERTIFICATE);
-    private TableColumn<PatientForMagazine, String> t_weiB = new TableColumn<>(Constants.NAME_TABLE_WEIGHT_BIRTHDAY);
-    private TableColumn<PatientForMagazine, String> t_heiB = new TableColumn<>(Constants.NAME_TABLE_HEIGHT_BIRTHDAY);
-    private TableColumn<PatientForMagazine, String> t_weiD = new TableColumn<>(Constants.NAME_TABLE_WEIGHT_DISCARDDAY);
-    private TableColumn<PatientForMagazine, String> t_NBO = new TableColumn<>(Constants.NAME_TABLE_NBO);
-    private TableColumn<PatientForMagazine, String> t_AUDIO = new TableColumn<>(Constants.NAME_TABLE_AUDIO);
-    private TableColumn<PatientForMagazine, Boolean> t_TUBER = new TableColumn<>(Constants.NAME_TABLE_TUBER);
-    private TableColumn<PatientForMagazine, String> t_BCJ = new TableColumn<>(Constants.NAME_TABLE_BCJ);
-    private TableColumn<PatientForMagazine, String> t_serialBCJ = new TableColumn<>(Constants.NAME_TABLE_SERIAL_BJC);
-    private TableColumn<PatientForMagazine, String> t_GEP = new TableColumn<>(Constants.NAME_TABLE_GEP);
-    private TableColumn<PatientForMagazine, String> t_serialGEP = new TableColumn<>(Constants.NAME_TABLE_SERIAL_GEP);
-    private TableColumn<PatientForMagazine, String> t_rod = new TableColumn<>(Constants.NAME_TABLE_RODDOM);
-    private TableColumn<PatientForMagazine, String> t_help = new TableColumn<>(Constants.NAME_TABLE_HELPER);
-    private TableColumn<PatientForMagazine, Integer> t_num = new TableColumn<>(Constants.NAME_TABLE_NUMBER);
-    private TableColumn<PatientForMagazine, String> t_gender = new TableColumn<>(Constants.NAME_TABLE_GENDER);
-    private TableColumn<PatientForMagazine, String> t_dia = new TableColumn<>(Constants.NAME_TABLE_DIA);
+    private TableColumn<PatientForMagazine, String> t_twoW = new TableColumn<>( Constants.getInstance().NAME_TABLE_TWO_WEEKS);
+    private TableColumn<PatientForMagazine, String> t_threeW = new TableColumn<>( Constants.getInstance().NAME_TABLE_THREE_WEEKS);
+    private TableColumn<PatientForMagazine, Boolean> t_sert = new TableColumn<>( Constants.getInstance().NAME_TABLE_SERTIFICATE);
+    private TableColumn<PatientForMagazine, String> t_weiB = new TableColumn<>( Constants.getInstance().NAME_TABLE_WEIGHT_BIRTHDAY);
+    private TableColumn<PatientForMagazine, String> t_heiB = new TableColumn<>( Constants.getInstance().NAME_TABLE_HEIGHT_BIRTHDAY);
+    private TableColumn<PatientForMagazine, String> t_weiD = new TableColumn<>( Constants.getInstance().NAME_TABLE_WEIGHT_DISCARDDAY);
+    private TableColumn<PatientForMagazine, String> t_NBO = new TableColumn<>( Constants.getInstance().NAME_TABLE_NBO);
+    private TableColumn<PatientForMagazine, String> t_AUDIO = new TableColumn<>( Constants.getInstance().NAME_TABLE_AUDIO);
+    private TableColumn<PatientForMagazine, Boolean> t_TUBER = new TableColumn<>( Constants.getInstance().NAME_TABLE_TUBER);
+    private TableColumn<PatientForMagazine, String> t_BCJ = new TableColumn<>( Constants.getInstance().NAME_TABLE_BCJ);
+    private TableColumn<PatientForMagazine, String> t_serialBCJ = new TableColumn<>( Constants.getInstance().NAME_TABLE_SERIAL_BJC);
+    private TableColumn<PatientForMagazine, String> t_GEP = new TableColumn<>( Constants.getInstance().NAME_TABLE_GEP);
+    private TableColumn<PatientForMagazine, String> t_serialGEP = new TableColumn<>( Constants.getInstance().NAME_TABLE_SERIAL_GEP);
+    private TableColumn<PatientForMagazine, String> t_rod = new TableColumn<>( Constants.getInstance().NAME_TABLE_RODDOM);
+    private TableColumn<PatientForMagazine, String> t_help = new TableColumn<>( Constants.getInstance().NAME_TABLE_HELPER);
+    private TableColumn<PatientForMagazine, Integer> t_num = new TableColumn<>( Constants.getInstance().NAME_TABLE_NUMBER);
+    private TableColumn<PatientForMagazine, String> t_gender = new TableColumn<>( Constants.getInstance().NAME_TABLE_GENDER);
+    private TableColumn<PatientForMagazine, String> t_dia = new TableColumn<>( Constants.getInstance().NAME_TABLE_DIA);
 
     public MagazineTable() {
 
@@ -46,7 +45,7 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
     Tooltip serialBCJTooltip;
     @Override
     void configTable() {
-        serialBCJTooltip = new Tooltip(Constants.TOOLTIP_SERIAL_PATIENTPAGE);
+        serialBCJTooltip = new Tooltip( Constants.getInstance().TOOLTIP_SERIAL_PATIENTPAGE);
         super.patientsList.setAll(DatabaseController.getPatientsForMagazine());
         super.configDocumentTable();
         t_twoW.setCellValueFactory(new PropertyValueFactory<>("twoWeeks"));
@@ -239,14 +238,11 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
 
     @Override
     public void updateTable() {
-        String search = DocumentPageControllers.search;
-        String begin = DocumentPageControllers.beginDate;
-        String end = DocumentPageControllers.endDate;
-        boolean check = DocumentPageControllers.check;
-        if (!search.equalsIgnoreCase("null") && begin.trim().length() > 6) {
-            super.patientsList.setAll(DatabaseController.getPatientsForMagazine(search, check, begin, end));
+        super.patientsList.clear();
+        if (!DocumentPageControllers.search.equalsIgnoreCase("null") && DocumentPageControllers.beginDate.trim().length() > 6) {
+            super.patientsList.addAll(DatabaseController.getPatientsForMagazine(DocumentPageControllers.search, DocumentPageControllers.check, DocumentPageControllers.beginDate, DocumentPageControllers.endDate));
         } else {
-            super.patientsList.setAll(DatabaseController.getPatientsForMagazine());
+            super.patientsList.addAll(DatabaseController.getPatientsForMagazine());
         }
         super.patientsList.sorted();
         updateAddresses();

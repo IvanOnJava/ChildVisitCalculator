@@ -1,9 +1,9 @@
 package com.ivanonjava.ChildVisitCalculator.dynamicPages;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.domains.FileController;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.pojo.PatientForPatronage;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,22 +12,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PatronageTable extends DocumentTable<PatientForPatronage> {
-    private TableColumn<PatientForPatronage, String> t_three = new TableColumn<>(Constants.NAME_TABLE_THREE_DAY);
+    private TableColumn<PatientForPatronage, String> t_three = new TableColumn<>( Constants.getInstance().NAME_TABLE_THREE_DAY);
 
-    private TableColumn<PatientForPatronage, String> t_twoW = new TableColumn<>(Constants.NAME_TABLE_TWO_WEEKS);
+    private TableColumn<PatientForPatronage, String> t_twoW = new TableColumn<>( Constants.getInstance().NAME_TABLE_TWO_WEEKS);
 
-    private TableColumn<PatientForPatronage, String> t_threeW = new TableColumn<>(Constants.NAME_TABLE_THREE_WEEKS);
-    private TableColumn<PatientForPatronage, String> patient_oneMonths = new TableColumn<>(Constants.NAME_TABLE_ONE_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_twoMonths = new TableColumn<>(Constants.NAME_TABLE_TWO_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_threeMonths = new TableColumn<>(Constants.NAME_TABLE_THREE_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_fourMonths = new TableColumn<>(Constants.NAME_TABLE_FOUR_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_fiveMonths = new TableColumn<>(Constants.NAME_TABLE_FIVE_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_sixMonths = new TableColumn<>(Constants.NAME_TABLE_SIX_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_sevenMonths = new TableColumn<>(Constants.NAME_TABLE_SEVEN_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_eightMonths = new TableColumn<>(Constants.NAME_TABLE_EIGHT_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_nineMonths = new TableColumn<>(Constants.NAME_TABLE_NINE_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_tenMonths = new TableColumn<>(Constants.NAME_TABLE_TEN_MONTHS);
-    private TableColumn<PatientForPatronage, String> patient_elevenMonths = new TableColumn<>(Constants.NAME_TABLE_ELEVEN_MONTHS);
+    private TableColumn<PatientForPatronage, String> t_threeW = new TableColumn<>( Constants.getInstance().NAME_TABLE_THREE_WEEKS);
+    private TableColumn<PatientForPatronage, String> patient_oneMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_ONE_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_twoMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_TWO_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_threeMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_THREE_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_fourMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_FOUR_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_fiveMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_FIVE_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_sixMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_SIX_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_sevenMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_SEVEN_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_eightMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_EIGHT_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_nineMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_NINE_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_tenMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_TEN_MONTHS);
+    private TableColumn<PatientForPatronage, String> patient_elevenMonths = new TableColumn<>( Constants.getInstance().NAME_TABLE_ELEVEN_MONTHS);
     private int number;
 
     @Override
@@ -109,16 +109,14 @@ public class PatronageTable extends DocumentTable<PatientForPatronage> {
 
 
     @Override
-    public void updateTable() {
-        String search = DocumentPageControllers.search;
-        String begin = DocumentPageControllers.beginDate;
-        String end = DocumentPageControllers.endDate;
-        boolean check = DocumentPageControllers.check;
-        if(!search.equalsIgnoreCase("null") && begin.trim().length() > 6) {
-            super.patientsList.setAll(DatabaseController.getPatientsForPatronage(search, check, begin, end, number));
+    public void
+    updateTable() {
+        super.patientsList.clear();
+        if(!DocumentPageControllers.search.equalsIgnoreCase("null") && DocumentPageControllers.beginDate.trim().length() > 6) {
+            super.patientsList.addAll(DatabaseController.getPatientsForPatronage(DocumentPageControllers.search, DocumentPageControllers.check, DocumentPageControllers.beginDate, DocumentPageControllers.endDate, number));
         }
         else {
-            super.patientsList.setAll(DatabaseController.getPatientsForPatronage(number));
+            super.patientsList.addAll(DatabaseController.getPatientsForPatronage(number));
         }
         updateAddresses();
     }

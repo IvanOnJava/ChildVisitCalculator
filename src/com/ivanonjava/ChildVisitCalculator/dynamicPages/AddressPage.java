@@ -1,8 +1,8 @@
 package com.ivanonjava.ChildVisitCalculator.dynamicPages;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.helpers.ActionButtonTableCell;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.pojo.Address;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +30,7 @@ public class AddressPage extends Stage {
 
     private Stage addAddress() {
         Stage stage = new Stage();
-        stage.getIcons().add(new Image(Constants.PATH_ICON_ADDRESS));
+        stage.getIcons().add(new Image(Constants.getInstance().PATH_ICON_ADDRESS));
         VBox vbox = new VBox();
         HBox hbox = new HBox();
         TextField addr = new TextField();
@@ -56,7 +56,7 @@ public class AddressPage extends Stage {
     }
 
     public AddressPage() {
-        getIcons().add(new Image(Constants.PATH_ICON_ADDRESS));
+        getIcons().add(new Image(Constants.getInstance().PATH_ICON_ADDRESS));
         AnchorPane pane = new AnchorPane();
         address.setEditable(true);
         config();

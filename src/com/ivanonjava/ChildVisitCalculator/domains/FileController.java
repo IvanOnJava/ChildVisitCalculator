@@ -1,7 +1,7 @@
 package com.ivanonjava.ChildVisitCalculator.domains;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.pojo.PatientForDiary;
 import com.ivanonjava.ChildVisitCalculator.pojo.PatientForMagazine;
 import com.ivanonjava.ChildVisitCalculator.pojo.PatientForPatronage;
@@ -18,17 +18,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class FileController {
-    private static FileController instance;
 
-    private FileController() {
-        File file = new File(Constants.DOCUMENT_FILE_PATH);
+    static  {
+        File file = new File(Constants.getInstance().DOCUMENT_FILE_PATH);
         file.mkdir();
     }
 
-    public static void Instantiate() {
-        instance = instance == null ?
-                new FileController() : instance;
-    }
+
 
     public static void writePatientsDiaryToFile(String beginDate, String endDate, int number) {
         ArrayList<Date> dates = CalendarController.getDaysWithoutWeekend(beginDate, endDate);
@@ -90,7 +86,7 @@ public class FileController {
             DocumentPageControllers.update();
         }
 
-        File file = new File(Constants.DOCUMENT_FILE_PATH + "Дневник №" + number + ".xls");
+        File file = new File(Constants.getInstance().DOCUMENT_FILE_PATH + "Дневник №" + number + ".xls");
         save(workbook, file);
 
     }
@@ -215,7 +211,7 @@ public class FileController {
             cell.setCellValue(emp.getElevenMonth());
 
         }
-        File file = new File(Constants.DOCUMENT_FILE_PATH + "Патронаж №" + number + ".xls");
+        File file = new File(Constants.getInstance().DOCUMENT_FILE_PATH + "Патронаж №" + number + ".xls");
         save(workbook, file);
     }
 
@@ -384,7 +380,7 @@ public class FileController {
             cell = row.createCell(i, CellType.STRING);
             cell.setCellValue(emp.getNumber());
         }
-        File file = new File(Constants.DOCUMENT_FILE_PATH + "Журнал.xls");
+        File file = new File(Constants.getInstance().DOCUMENT_FILE_PATH + "Журнал.xls");
         save(workbook, file);
     }
 

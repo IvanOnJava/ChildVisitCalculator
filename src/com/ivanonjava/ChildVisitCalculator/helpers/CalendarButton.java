@@ -38,8 +38,8 @@ public class CalendarButton extends Button {
     private void click(ActionEvent actionEvent) {
 
         if (!isHolidays) {
-            if (DatabaseController.addHolidays(data, false)) {
-                this.setStyle("-fx-background-color: red");
+            if (DatabaseController.addHolidays(data)) {
+                this.setStyle("-fx-background-color: #ff6e5a");
                 isHolidays = true;
             }
         } else if (DatabaseController.removeHolidays(data)) {

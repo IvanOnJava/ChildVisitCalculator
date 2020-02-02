@@ -1,9 +1,9 @@
 package com.ivanonjava.ChildVisitCalculator.dynamicPages;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.helpers.ActionButtonTableCell;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.helpers.TranslateWord;
 import com.ivanonjava.ChildVisitCalculator.pojo.PatientForDocument;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -23,27 +23,27 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
     ObservableList<T> patientsList = FXCollections.observableArrayList();
     private ObservableList<String> addresses = FXCollections.observableArrayList();
 
-    private TableColumn<T, Integer> t_id = new TableColumn<>(Constants.NAME_TABLE_ID);
+    private TableColumn<T, Integer> t_id = new TableColumn<>( Constants.getInstance().NAME_TABLE_ID);
 
-    private TableColumn<T, Button> b_delete = new TableColumn<>(Constants.NAME_TABLE_BUTTON);
+    private TableColumn<T, Button> b_delete = new TableColumn<>( Constants.getInstance().NAME_TABLE_BUTTON);
 
-    private TableColumn<T, String> t_fio = new TableColumn<>(Constants.NAME_TABLE_FULLNAME);
+    private TableColumn<T, String> t_fio = new TableColumn<>( Constants.getInstance().NAME_TABLE_FULLNAME);
 
-    private TableColumn<T, String> t_birth = new TableColumn<>(Constants.NAME_TABLE_BIRTHDAY);
+    private TableColumn<T, String> t_birth = new TableColumn<>( Constants.getInstance().NAME_TABLE_BIRTHDAY);
 
-    private TableColumn<T, String> t_disc = new TableColumn<>(Constants.NAME_TABLE_DISCARDDAY);
+    private TableColumn<T, String> t_disc = new TableColumn<>( Constants.getInstance().NAME_TABLE_DISCARDDAY);
 
-    private TableColumn<T, String> t_comment = new TableColumn<>(Constants.NAME_TABLE_COMMENT);
+    private TableColumn<T, String> t_comment = new TableColumn<>( Constants.getInstance().NAME_TABLE_COMMENT);
 
-    private TableColumn<T, Boolean> t_present = new TableColumn<>(Constants.NAME_TABLE_PRESENT);
+    private TableColumn<T, Boolean> t_present = new TableColumn<>( Constants.getInstance().NAME_TABLE_PRESENT);
 
-    private TableColumn<T, String> adr = new TableColumn<>(Constants.NAME_TABLE_ADDRESS);
-    private TableColumn<T, String> t_street = new TableColumn<>(Constants.NAME_TABLE_STREET);
-    private TableColumn<T, String> t_apart = new TableColumn<>(Constants.NAME_TABLE_APARTMENT);
+    private TableColumn<T, String> adr = new TableColumn<>( Constants.getInstance().NAME_TABLE_ADDRESS);
+    private TableColumn<T, String> t_street = new TableColumn<>( Constants.getInstance().NAME_TABLE_STREET);
+    private TableColumn<T, String> t_apart = new TableColumn<>( Constants.getInstance().NAME_TABLE_APARTMENT);
 
-    private TableColumn<T, String> t_phone = new TableColumn<>(Constants.NAME_TABLE_PHONE);
+    private TableColumn<T, String> t_phone = new TableColumn<>( Constants.getInstance().NAME_TABLE_PHONE);
 
-    private TableColumn<T, String> t_one = new TableColumn<>(Constants.NAME_TABLE_ONE_DAY);
+    private TableColumn<T, String> t_one = new TableColumn<>( Constants.getInstance().NAME_TABLE_ONE_DAY);
 
 
     void updateAddresses() {

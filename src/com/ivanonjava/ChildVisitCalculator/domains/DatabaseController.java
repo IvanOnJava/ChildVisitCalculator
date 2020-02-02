@@ -1,6 +1,6 @@
 package com.ivanonjava.ChildVisitCalculator.domains;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.pojo.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +12,6 @@ import java.util.Map;
 
 public final class DatabaseController {
     private static String sortAction = " birthday ";
-    private static DatabaseController instance;
     private static Connection connect;
 
     private static Statement st;
@@ -24,50 +23,28 @@ public final class DatabaseController {
         return connect;
     }
 
-    private DatabaseController() {
-        createConnect();
-    }
-
-
-    private void createConnect() {
+    static {
+        Constants constants = Constants.getInstance();
         try {
-            Class.forName(Constants.DB_Driver).getDeclaredConstructor().newInstance();
-            try {
-                connect = DriverManager.getConnection(Constants.DB_URL + Constants.DB_NAME);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
+        Class.forName(constants.DB_Driver).getDeclaredConstructor().newInstance();
+        try {
+            connect = DriverManager.getConnection(constants.DB_URL + constants.DB_NAME);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+    } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
+        e.printStackTrace();
     }
+}
 
 
-    public static void Instantiate() {
-        instance = instance == null ?
-                new DatabaseController() : instance;
-    }
-
-
-    public static boolean addHolidays(String dates, boolean everyYear) {
-
-        if (everyYear) {
-            for (int i = -20; i < 20; i++) {
-                Date day = CalendarController.getDatePlusYear(dates, i);
-                if (validateHoliday(day)) {
-                    addHoliday(day);
-                }
-            }
+    public static boolean addHolidays(String dates) {
+        Date day = CalendarController.getDate(dates);
+        if (validateHoliday(day)) {
+            addHoliday(day);
             return true;
-        } else {
-            Date day = CalendarController.getDate(dates);
-            if (validateHoliday(day)) {
-                addHoliday(day);
-                return true;
-            }
         }
-
-        return false;
+         return false;
     }
 
     public static boolean isWeekend(String a) {
@@ -244,7 +221,7 @@ public final class DatabaseController {
                 ps.setDate(i + 2, CalendarController.getDate(date.toString()));
             rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) >= Constants.MAX_PATIENTS;
+                return rs.getInt(1) >= Constants.getInstance().MAX_PATIENTS;
             } else {
                 return false;
             }
@@ -362,7 +339,7 @@ public final class DatabaseController {
         ArrayList<PatientForPatronage> listPatient = new ArrayList<>();
         String type = isSortAsk() ? "DESC" : "ASC";
         try {
-            ps = getConnect().prepareStatement("SELECT patients.*, days_tables.* FROM patients LEFT JOIN days_tables on patients.id = patient_id LEFT JOIN addresses a on patients.address = a.address WHERE number = (?) ORDER BY (?) " + type);
+            ps = getConnect().prepareStatement("SELECT patients.*, days_tables.* FROM patients LEFT JOIN days_tables on patients.id = patient_id LEFT JOIN addresses a on patients.address = a.address WHERE number = (?) AND  days_tables.eleven_months > '" + CalendarController.getNow().getTime() + "' ORDER BY (?) " + type);
             ps.setInt(1, number);
             ps.setString(2, getSortAction());
             rs = ps.executeQuery();
@@ -550,7 +527,7 @@ public final class DatabaseController {
                             "roddom, nameHelper, number " +
                             "FROM patients LEFT JOIN days_tables dt on patients.id = dt.patient_id " +
                             "LEFT JOIN addInfo aI on patients.id = aI.patient_id " +
-                            "LEFT JOIN addresses a on patients.address = a.address ORDER BY " + getSortAction());
+                            "LEFT JOIN addresses a on patients.address = a.address WHERE dt.eleven_months > '" + CalendarController.getNow().getTime() + "' ORDER BY " + getSortAction());
             selectPatientForMagazine(list);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -954,7 +931,7 @@ public final class DatabaseController {
         return false;
     }
 
-    public static String getTextForTutu(String begin, String end) {
+    public static String getInfoAboutBJC(String begin, String end) {
         String result = "Родилось - ";
         try {
             ArrayList<String> list = new ArrayList<>();
@@ -1029,6 +1006,7 @@ public final class DatabaseController {
     }
 
     public static boolean updatePatientTwoWeeks(int id, String twoWeeks) {
+
         try {
             ps = getConnect().prepareStatement("UPDATE days_tables SET two_weeks = (?) WHERE patient_id = (?)");
             ps.setDate(1, CalendarController.getDate(twoWeeks));

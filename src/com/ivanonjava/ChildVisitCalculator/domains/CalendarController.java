@@ -1,6 +1,6 @@
 package com.ivanonjava.ChildVisitCalculator.domains;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.pojo.Week;
 
 import java.sql.Date;
@@ -10,25 +10,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CalendarController {
-    private static Calendar calendar;
-    private static int[] memoryDate;
-    private static boolean memoryFlag;
-    private static CalendarController instance;
+    private static Calendar calendar = Calendar.getInstance();;
 
-    public static void Instantiate() {
-        instance = instance == null ?
-                new CalendarController() : instance;
-    }
-
-    private CalendarController() {
-        calendar = Calendar.getInstance();
-        memoryDate = new int[3];
-        memoryFlag = false;
-    }
 
     public static Date getNow() {
         LocalDate localDate = LocalDate.now();
-        String now = DateTimeFormatter.ofPattern(Constants.DATE_PATTERN).format(localDate);
+        String now = DateTimeFormatter.ofPattern(Constants.getInstance().DATE_PATTERN).format(localDate);
         return getDate(now);
     }
 
@@ -39,14 +26,6 @@ public class CalendarController {
         return new Date(calendar.getTime().getTime());
     }
 
-    static Date getDatePlusYear(String dates, int i) {
-        calendar.clear();
-        int[] data = replaceDay(dates);
-        calendar.set(data[0], data[1], data[2]);
-        calendar.add(Calendar.YEAR, i);
-
-        return new Date(calendar.getTime().getTime());
-    }
 
     private static int[] replaceDay(String day) {
         int[] data = new int[3];
@@ -55,6 +34,7 @@ public class CalendarController {
             data[0] = Integer.parseInt(sDay[0]);
             data[1] = Integer.parseInt(sDay[1]) - 1;
             data[2] = Integer.parseInt(sDay[2]);
+            sDay = null;
             return data;
         } else if (day.contains("/")) {
             String[] sDay = day.split("/");
@@ -67,36 +47,26 @@ public class CalendarController {
             data[0] = Integer.parseInt(sDay[2]);
             data[1] = Integer.parseInt(sDay[1]) - 1;
             data[2] = Integer.parseInt(sDay[0]);
-            if (memoryFlag) {
-                memoryDate = data;
-                memoryFlag = false;
-            }
             return data;
         }
     }
 
     public static Date[] getVisitDays(String birthday, String discardDay, int id_table) {
+        int[] birth = replaceDay(birthday);
+        int[] disk = replaceDay(discardDay);
         java.sql.Date[] dates = new java.sql.Date[15];
-        memoryFlag = true;
-        dates[0] = getDateForTable(discardDay, 1, Calendar.DAY_OF_YEAR, id_table);
-        memoryFlag = true;
-        dates[1] = getDateForTable(discardDay, 3, Calendar.DAY_OF_YEAR, id_table);
-        memoryFlag = true;
-        dates[2] = getDateForTable(birthday, 13, Calendar.DAY_OF_YEAR, id_table);
-        memoryFlag = true;
-        dates[3] = getDateForTable(birthday, 20, Calendar.DAY_OF_YEAR, id_table);
-        memoryFlag = true;
+        dates[0] = getDateForTable(disk, 1, Calendar.DAY_OF_YEAR, id_table);
+        dates[1] = getDateForTable(disk, 3, Calendar.DAY_OF_YEAR, id_table);
+        dates[2] = getDateForTable(birth, 13, Calendar.DAY_OF_YEAR, id_table);
+        dates[3] = getDateForTable(birth, 20, Calendar.DAY_OF_YEAR, id_table);
         for (int i = 4; i < dates.length; i++) {
-            memoryFlag = true;
-            dates[i] = getDateForTable(birthday, i - 3, Calendar.MONTH, id_table);
+            dates[i] = getDateForTable(birth, i - 3, Calendar.MONTH, id_table);
         }
         return dates;
     }
 
-
-    private static Date getDateForTable(String day, int count, int field, int id_table) {
+    private static Date getDateForTable(int[] data, int count, int field, int id_table) {
         calendar.clear();
-        int[] data = replaceDay(day);
         calendar.set(data[0], data[1], data[2]);
         calendar.add(field, count);
         if (field == Calendar.MONTH) {
@@ -120,7 +90,8 @@ public class CalendarController {
             if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                 Calendar cal2 = Calendar.getInstance();
                 cal2.clear();
-                cal2.set(memoryDate[0], memoryDate[1], memoryDate[2] - 1);
+                cal2.setTime(calendar.getTime());
+                cal2.add(Calendar.DAY_OF_YEAR, -1);
                 if (calendar.after(cal2))
                     calendar.add(Calendar.DAY_OF_YEAR, 1);
                 else
@@ -134,6 +105,7 @@ public class CalendarController {
             return new Date(calendar.getTime().getTime());
         }
     }
+
 
     static ArrayList<java.util.Date> getDaysWithoutWeekend(String b_date, String e_date) {
         Calendar calendar = Calendar.getInstance();
@@ -155,15 +127,16 @@ public class CalendarController {
     }
 
     static Date[] getDays(String b_date, String e_date) {
+        Date date = getDate(b_date);
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         cal1.clear();
         cal2.clear();
-        cal1.setTime(getDate(b_date));
+        cal1.setTime(date);
         cal2.setTime(getDate(e_date));
         Date[] data = new Date[Math.abs(daysBetween(cal1.getTime(), cal2.getTime())) + 1];
         for (int i = 0; i < data.length; i++) {
-            data[i] = getDayPlusDay(b_date, i);
+            data[i] = getDayPlusDay(date, i);
         }
         return data;
     }
@@ -174,10 +147,10 @@ public class CalendarController {
         return between;
     }
 
-    private static Date getDayPlusDay(String date, int i) {
+    private static Date getDayPlusDay(Date date, int i) {
         calendar.clear();
-        int[] data = replaceDay(date);
-        calendar.set(data[0], data[1], data[2]);
+        ;
+        calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_YEAR, i);
         return new Date(calendar.getTime().getTime());
     }
@@ -218,13 +191,10 @@ public class CalendarController {
         return list;
     }
 
-    public static boolean isWeekend(String a) {
-        int day = Integer.parseInt(a.trim().split("\\.")[0]);
-        int month = Integer.parseInt(a.trim().split("\\.")[1]) - 1;
-        int year = Integer.parseInt(a.trim().split("\\.")[2]);
-        Calendar calWeekend = Calendar.getInstance();
-        calWeekend.clear();
-        calWeekend.set(year, month, day);
-        return calWeekend.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calWeekend.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
+    public static boolean isWeekend(String day) {
+        calendar.clear();
+        int[] data = replaceDay(day);
+        calendar.set(data[0], data[1], data[2]);
+        return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
     }
 }

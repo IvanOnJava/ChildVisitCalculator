@@ -1,11 +1,10 @@
 package com.ivanonjava.ChildVisitCalculator.UI.controllers;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.Main;
-import com.ivanonjava.ChildVisitCalculator.Pages;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.domains.FileController;
 import com.ivanonjava.ChildVisitCalculator.dynamicPages.*;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
 import com.ivanonjava.ChildVisitCalculator.helpers.Reasons;
 import javafx.fxml.Initializable;
@@ -44,7 +43,7 @@ public class DocumentPageControllers implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        imageReload.setImage(new Image(Constants.PATH_ICON_RELOAD));
+        imageReload.setImage(new Image(Constants.getInstance().PATH_ICON_RELOAD));
         searchBeginDate.setConverter(Converter.getConverter());
         searchEndDate.setConverter(Converter.getConverter());
 
@@ -58,13 +57,13 @@ public class DocumentPageControllers implements Initializable {
     private void createAllTables() {
         TabPane.getTabs().clear();
         listTables.clear();
-        Tab MagazineTab = new Tab(Constants.TAB_MAGAZINE_NAME);
+        Tab MagazineTab = new Tab(Constants.getInstance().TAB_MAGAZINE_NAME);
         MagazineTable mTable = new MagazineTable();
         MagazineTab.setContent(mTable);
         TabPane.getTabs().add(MagazineTab);
         listTables.add(mTable);
         for (int i : DatabaseController.getAllNumber()) {
-            Tab tab = new Tab(Constants.TAB_PATRONAGE_NAME + i);
+            Tab tab = new Tab(Constants.getInstance().TAB_PATRONAGE_NAME + i);
             PatronageTable table = new PatronageTable(i);
             tab.setContent(table);
             TabPane.getTabs().add(tab);
@@ -172,11 +171,11 @@ public class DocumentPageControllers implements Initializable {
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(Main.getStage());
-        stage.getIcons().add(new Image(Constants.PATH_ICON_INFO));
+        stage.getIcons().add(new Image(Constants.getInstance().PATH_ICON_INFO));
         stage.setTitle("Отчет за [" + getDate(saveBeginDate) + " - " + getDate(saveEndDate) + "]");
         AnchorPane pane = new AnchorPane();
         TextArea textArea = new TextArea();
-        textArea.setText(DatabaseController.getTextForTutu(getDate(saveBeginDate), getDate(saveEndDate)));
+        textArea.setText(DatabaseController.getInfoAboutBJC(getDate(saveBeginDate), getDate(saveEndDate)));
         AnchorPane.setRightAnchor(textArea, 5.0);
         AnchorPane.setLeftAnchor(textArea, 5.0);
         AnchorPane.setTopAnchor(textArea, 5.0);

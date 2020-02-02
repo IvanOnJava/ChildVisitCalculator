@@ -1,10 +1,9 @@
 package com.ivanonjava.ChildVisitCalculator.dynamicPages;
 
-import com.ivanonjava.ChildVisitCalculator.Constants;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
-import com.ivanonjava.ChildVisitCalculator.helpers.Reasons;
 import com.ivanonjava.ChildVisitCalculator.pojo.Patient;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -168,9 +167,9 @@ public class PatientPage extends Stage {
     }
     Tooltip tooltipSerialBCJ;
     public PatientPage() {
-        tooltipSerialBCJ = new Tooltip(Constants.TOOLTIP_SERIAL_PATIENTPAGE);
+        tooltipSerialBCJ = new Tooltip(   Constants.getInstance().getInstance().getInstance().TOOLTIP_SERIAL_PATIENTPAGE);
 
-        getIcons().add(new Image(Constants.PATH_ICON_ADD_PATIENT));
+        getIcons().add(new Image(   Constants.getInstance().getInstance().getInstance().PATH_ICON_ADD_PATIENT));
         configButton();
         VBox vBoxLeft = new VBox();
         vBoxLeft.getChildren().addAll(

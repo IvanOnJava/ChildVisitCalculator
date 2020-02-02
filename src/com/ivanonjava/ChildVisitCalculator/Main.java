@@ -1,10 +1,6 @@
 package com.ivanonjava.ChildVisitCalculator;
 
-import com.ivanonjava.ChildVisitCalculator.domains.CalendarController;
-import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
-import com.ivanonjava.ChildVisitCalculator.domains.FileController;
-
-import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
+import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,28 +15,42 @@ public class Main extends Application {
 
     private static Stage stage;
 
-
+    private static Scene DocumentScene;
+    private static Scene CalendarScene;
 
     public static void main(String[] args) {
-
-        CalendarController.Instantiate();
-        DatabaseController.Instantiate();
-        FileController.Instantiate();
-        Converter.getInstance();
         launch(args);
     }
 
     public void start(Stage primaryStage) throws IOException {
-
+        initScene();
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource(Pages.getPage(Pages.MAIN)));
-        stage.setTitle(Constants.TITLE);
-        stage.setMinWidth(Constants.MAIN_PAGE_MIN_WIDTH);
-        stage.setMinHeight(Constants.MAIN_PAGE_MIN_HEIGHT);
+        Parent root = FXMLLoader.load(getClass().getResource(Constants.getInstance().TEMPLATES_URL + "main" + Constants.getInstance().POST_F));
+        stage.setTitle(Constants.getInstance().TITLE);
+        stage.setMinWidth(Constants.getInstance().MAIN_PAGE_MIN_WIDTH);
+        stage.setMinHeight(Constants.getInstance().MAIN_PAGE_MIN_HEIGHT);
         stage.setResizable(false);
-        stage.getIcons().add(new Image(Constants.PATH_ICON_MAIN));
+        stage.getIcons().add(new Image(Constants.getInstance().PATH_ICON_MAIN));
+
         stage.setScene(new Scene(root));
         stage.show();
+
+    }
+
+    private void initScene() {
+        Parent parent = null;
+        try {
+            parent = FXMLLoader.load(Main.class.getResource(Constants.getInstance().TEMPLATES_URL + "document" + Constants.getInstance().POST_F));
+            DocumentScene = new Scene(parent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            parent = FXMLLoader.load(Main.class.getResource(Constants.getInstance().TEMPLATES_URL + "newHolidays" + Constants.getInstance().POST_F));
+            CalendarScene = new Scene(parent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -48,37 +58,23 @@ public class Main extends Application {
 
         stage.setResizable(true);
 
-        stage.setMinWidth(Constants.DOCUMENT_PAGE_MIN_WIDTH);
-        stage.setMinHeight(Constants.DOCUMENT_PAGE_MIN_HEIGHT);
+        stage.setMinWidth(Constants.getInstance().DOCUMENT_PAGE_MIN_WIDTH);
+        stage.setMinHeight(Constants.getInstance().DOCUMENT_PAGE_MIN_HEIGHT);
         stage.setMaxHeight(Double.MAX_VALUE);
         stage.setMaxWidth(Double.MAX_VALUE);
-        setPage(Pages.DOCUMENT);
+        stage.setScene(DocumentScene);
         stage.setMaximized(true);
     }
 
     public static void setHolidaysPage() {
         stage.setResizable(false);
-
-        setPage(Pages.newHOLIDAYS);
+        stage.setScene(CalendarScene);
         stage.setMinHeight(600);
         stage.setMinWidth(800);
         stage.setMaxHeight(600);
         stage.setMinWidth(800);
         stage.setMaximized(false);
 
-    }
-
-    private static void setPage(Pages page) {
-
-
-        String str = Pages.getPage(page);
-        try {
-            Parent root = FXMLLoader.load(Main.class.getResource(str));
-            stage.setScene(new Scene(root));
-            System.gc();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static Stage getStage() {
