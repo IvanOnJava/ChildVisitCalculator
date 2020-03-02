@@ -23,7 +23,7 @@ public class Main extends Application {
     }
 
     public void start(Stage primaryStage) throws IOException {
-        initScene();
+        initScenes();
         stage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource(Constants.getInstance().TEMPLATES_URL + "main" + Constants.getInstance().POST_F));
         stage.setTitle(Constants.getInstance().TITLE);
@@ -37,16 +37,19 @@ public class Main extends Application {
 
     }
 
-    private void initScene() {
-        Parent parent = null;
+    /**
+     * initialize Scene for program;
+     */
+    private void initScenes() {
+        Parent parent;
         try {
-            parent = FXMLLoader.load(Main.class.getResource(Constants.getInstance().TEMPLATES_URL + "document" + Constants.getInstance().POST_F));
+            parent = FXMLLoader.load(getClass().getResource(Constants.getInstance().TEMPLATES_URL + "document" + Constants.getInstance().POST_F));
             DocumentScene = new Scene(parent);
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            parent = FXMLLoader.load(Main.class.getResource(Constants.getInstance().TEMPLATES_URL + "newHolidays" + Constants.getInstance().POST_F));
+            parent = FXMLLoader.load(getClass().getResource(Constants.getInstance().TEMPLATES_URL + "newHolidays" + Constants.getInstance().POST_F));
             CalendarScene = new Scene(parent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,6 +57,9 @@ public class Main extends Application {
 
     }
 
+    /**
+     * open Document page
+     */
     public static void setDocumentPage() {
 
         stage.setResizable(true);
@@ -66,6 +72,9 @@ public class Main extends Application {
         stage.setMaximized(true);
     }
 
+    /**
+     * open Calendar holidays page;
+     */
     public static void setHolidaysPage() {
         stage.setResizable(false);
         stage.setScene(CalendarScene);
@@ -77,6 +86,10 @@ public class Main extends Application {
 
     }
 
+    /**
+     *
+     * @return open Stage;
+     */
     public static Stage getStage() {
 
         return stage;

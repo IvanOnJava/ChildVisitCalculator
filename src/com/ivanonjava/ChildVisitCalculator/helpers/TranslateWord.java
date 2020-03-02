@@ -2,9 +2,12 @@ package com.ivanonjava.ChildVisitCalculator.helpers;
 
 import static com.ivanonjava.ChildVisitCalculator.helpers.Constants.getInstance;
 public class TranslateWord{
-
+    /**
+     * helper for translate word
+     * @param word = table name
+     * @return database name  or  null
+     */
     public static String translateTableNameToDatabaseName(String word){
-       
         switch (word){
             case Constants.NAME_TABLE_ID: return getInstance().NAME_DB_ID;
             case Constants.NAME_TABLE_FULLNAME: return getInstance().NAME_DB_FULLNAME;

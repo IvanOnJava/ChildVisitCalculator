@@ -46,6 +46,31 @@ public class Patient {
         this.diagnose = diagnose;
     }
 
+    public Patient(String fullName, String address, String kv, String birthday, String discardDay, String gender) {
+        this.fullName = fullName;
+        this.address = address;
+        this.kv = kv;
+        this.birthday = birthday;
+        this.discardDay = discardDay;
+        this.gender = gender;
+
+        this.phone = "";
+        this.weightB = "";
+        this.heightB = "";
+        this.weightD = "";
+        this.dateNBO = "";
+        this.dateAUDIO = "";
+        this.dateBCJ = "";
+        this.serialBCJ = "";
+        this.dateGEP = "";
+        this.serialGEP = "";
+        this.tuber = false;
+        this.roddom = "";
+        this.helper = "";
+        this.diagnose = "";
+
+    }
+
     public String getFullName() {
         return fullName;
     }

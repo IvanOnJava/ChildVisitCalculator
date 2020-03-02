@@ -19,12 +19,12 @@ import java.util.Date;
 
 public class FileController {
 
-    static  {
-        File file = new File(Constants.getInstance().DOCUMENT_FILE_PATH);
-        file.mkdir();
-    }
-
-
+    /**
+     * save diary to file
+     * @param beginDate date of begin
+     * @param endDate date of end
+     * @param number number of patronage
+     */
 
     public static void writePatientsDiaryToFile(String beginDate, String endDate, int number) {
         ArrayList<Date> dates = CalendarController.getDaysWithoutWeekend(beginDate, endDate);
@@ -91,6 +91,12 @@ public class FileController {
 
     }
 
+    /**
+     * save patronage in file
+     * @param begin date of begin
+     * @param end date of end
+     * @param number number of patronage
+     */
     public static void savePatronage(String begin, String end, int number) {
         ArrayList<PatientForPatronage> list = DatabaseController.getPatientsForPatronage("birthday", true, begin, end, number);
 
@@ -162,9 +168,9 @@ public class FileController {
 
         cell = row.createCell(20, CellType.STRING);
         cell.setCellValue("11,5 мес");
-        System.out.println("Debug");
+
         for (PatientForPatronage emp : list) {
-            System.out.println(emp);
+
             row = sheet.createRow(++rowNum);
             cell = row.createCell(0, CellType.STRING);
             cell.setCellValue(emp.getFIO());
@@ -215,6 +221,11 @@ public class FileController {
         save(workbook, file);
     }
 
+    /**
+     * save file to excel
+     * @param workbook file
+     * @param file file path
+     */
     private static void save(HSSFWorkbook workbook, File file) {
         file.getParentFile().mkdirs();
         FileOutputStream outFile = null;
@@ -232,7 +243,11 @@ public class FileController {
         }
     }
 
-
+    /**
+     * save magazine in file to excel
+     * @param begin date of begin
+     * @param end date of end
+     */
     public static void saveMagazine(String begin, String end) {
 
         ArrayList<PatientForMagazine> list = DatabaseController.getPatientsForMagazine("birthday", true, begin, end);
@@ -386,7 +401,7 @@ public class FileController {
 
     private static String replaceDate(String date) {
         String result = date;
-        System.out.println(date);
+       
         if(date.contains("-")){
             String[] temp = date.split("-");
             result = String.format("%s.%s.%s", temp[2], temp[1], temp[0]);

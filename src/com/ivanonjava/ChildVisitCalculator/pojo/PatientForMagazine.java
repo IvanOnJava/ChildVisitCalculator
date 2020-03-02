@@ -23,6 +23,7 @@ public class PatientForMagazine extends PatientForDocument {
     private SimpleStringProperty helper;
     private SimpleIntegerProperty number;
 
+
     public PatientForMagazine(int id, String FIO, String birthday, String discardDay, String address, String k, String gender, String phone, boolean isPresent, String comment, String oneDay, String threeDay, String twoWeeks, String threeWeeks, boolean sertificate, String weightB, String heightB, String weightD, String diagnose, String dateNBO, String dateAUDIO, boolean tuber, String dateBCJ, String serialBCJ, String dateGEP, String serialGEP, String roddom, String helper, int number) {
         super(id, FIO, birthday, discardDay, address,k, phone, isPresent, comment, oneDay, threeDay, twoWeeks, threeWeeks);
         this.gender = new SimpleStringProperty(gender);
@@ -65,8 +66,8 @@ public class PatientForMagazine extends PatientForDocument {
     }
 
     public void setTuber(boolean tuber) {
-        if(DatabaseController.updatePatientTuberOnId(getId(), tuber));
-        this.tuber.set(tuber);
+        if(DatabaseController.updatePatientTuberOnId(getId(), tuber))
+            this.tuber.set(tuber);
     }
 
     public String getWeightB() {

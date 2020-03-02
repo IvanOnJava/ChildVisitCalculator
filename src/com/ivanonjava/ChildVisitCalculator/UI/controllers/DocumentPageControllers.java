@@ -1,11 +1,12 @@
 package com.ivanonjava.ChildVisitCalculator.UI.controllers;
 
 import com.ivanonjava.ChildVisitCalculator.Main;
+import com.ivanonjava.ChildVisitCalculator.domains.CalendarController;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.domains.FileController;
 import com.ivanonjava.ChildVisitCalculator.dynamicPages.*;
 import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
-import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
+import com.ivanonjava.ChildVisitCalculator.helpers.HelperForDatepicker;
 import com.ivanonjava.ChildVisitCalculator.helpers.Reasons;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -13,18 +14,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DocumentPageControllers implements Initializable {
 
-    public javafx.scene.control.TabPane TabPane;
+    public javafx.scene.control.TabPane pane;
     public ImageView imageReload;
 
     public DatePicker searchBeginDate;
@@ -38,57 +38,71 @@ public class DocumentPageControllers implements Initializable {
     public DatePicker saveEndDate;
     private Tooltip tooltip = new Tooltip("Обновить таблицы");
 
-    private static List<DocumentTable<?>> listTables = new ArrayList<>();
+    private static Set<DocumentTable<?>> setTables = new HashSet<>();
     private static PatientPage page;
+    private Set<Integer> addressSet;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         imageReload.setImage(new Image(Constants.getInstance().PATH_ICON_RELOAD));
-        searchBeginDate.setConverter(Converter.getConverter());
-        searchEndDate.setConverter(Converter.getConverter());
+        searchBeginDate.setConverter(HelperForDatepicker.getConverter());
+        searchEndDate.setConverter(HelperForDatepicker.getConverter());
 
-        searchBeginDate.setConverter(Converter.getConverter());
-        searchEndDate.setConverter(Converter.getConverter());
-        saveBeginDate.setConverter(Converter.getConverter());
-        saveEndDate.setConverter(Converter.getConverter());
+        searchBeginDate.setConverter(HelperForDatepicker.getConverter());
+        searchEndDate.setConverter(HelperForDatepicker.getConverter());
+        saveBeginDate.setConverter(HelperForDatepicker.getConverter());
+        saveEndDate.setConverter(HelperForDatepicker.getConverter());
+        imageReload.setOnMouseClicked(this::updateAllTable);
+
+        addressSet = new HashSet<>();
         createAllTables();
     }
 
     private void createAllTables() {
-        TabPane.getTabs().clear();
-        listTables.clear();
-        Tab MagazineTab = new Tab(Constants.getInstance().TAB_MAGAZINE_NAME);
-        MagazineTable mTable = new MagazineTable();
-        MagazineTab.setContent(mTable);
-        TabPane.getTabs().add(MagazineTab);
-        listTables.add(mTable);
-        for (int i : DatabaseController.getAllNumber()) {
-            Tab tab = new Tab(Constants.getInstance().TAB_PATRONAGE_NAME + i);
-            PatronageTable table = new PatronageTable(i);
-            tab.setContent(table);
-            TabPane.getTabs().add(tab);
-            listTables.add(table);
+        ArrayList<Integer> numbers = DatabaseController.getAllNumber();
+        if (!Arrays.equals(addressSet.toArray(), numbers.toArray())) {
+            addressSet.clear();
+            addressSet.addAll(numbers);
+            Set<DocumentTable<?>> set = new HashSet<>();
+            Tab[] tab_temp = new Tab[numbers.size() + 1];
+            Tab MagazineTab = new Tab(Constants.getInstance().TAB_MAGAZINE_NAME);
+            MagazineTable mTable = new MagazineTable();
+            MagazineTab.setContent(mTable);
+            int j = 0;
+            tab_temp[j++] = MagazineTab;
+            set.add(mTable);
+            for (int i : addressSet) {
+                Tab t = new Tab(Constants.getInstance().TAB_PATRONAGE_NAME + i);
+                PatronageTable table = new PatronageTable(i);
+                t.setContent(table);
+                tab_temp[j++] = t;
+                set.add(table);
+            }
+            pane.getTabs().setAll(tab_temp);
+            setTables.addAll(set);
         }
         update();
     }
 
+
     public void saveDiary() {
         if (getDate(saveBeginDate).trim().equalsIgnoreCase("") || getDate(saveEndDate).trim().equalsIgnoreCase(""))
             return;
+        checkDateForDocuments();
         for (int i : DatabaseController.getAllNumber()) {
             FileController.writePatientsDiaryToFile(getDate(saveBeginDate), getDate(saveEndDate), i);
         }
     }
 
     public static void update() {
-        listTables.forEach(DocumentTable::updateTable);
+        setTables.forEach(DocumentTable::updateTable);
     }
 
-    public void updateAllTable() {
+    public void updateAllTable(MouseEvent event) {
         createAllTables();
     }
 
-    public static void reopen() {
+    public static void reopenAddPatientPage() {
         page.close();
         openAddPatientPage();
     }
@@ -104,15 +118,26 @@ public class DocumentPageControllers implements Initializable {
         if (page == null)
             openAddPatientPage();
         else
-            reopen();
+            reopenAddPatientPage();
     }
 
     private void selectByAction(String action) {
+        checkSearchDate();
         beginDate = getDate(searchBeginDate);
         endDate = getDate(searchEndDate);
         check = checkPeriod.isSelected();
         search = action;
-        updateAllTable();
+        updateAllTable(null);
+    }
+
+    private void checkSearchDate() {
+        if(CalendarController.getDate(getDate(searchEndDate)).before(CalendarController.getDate(getDate(searchBeginDate)))){
+            String temp = getDate(searchBeginDate);
+            searchBeginDate.getEditor().setText(getDate(searchEndDate));
+            searchEndDate.getEditor().setText(temp);
+
+        }
+
     }
 
     public void searchForBirthday() {
@@ -154,10 +179,20 @@ public class DocumentPageControllers implements Initializable {
     }
 
     public void saveDocuments() {
+
         if (getDate(saveBeginDate).trim().equalsIgnoreCase("") || getDate(saveEndDate).trim().equalsIgnoreCase(""))
             return;
-        for (DocumentTable<?> table : listTables) {
+        checkDateForDocuments();
+        for (DocumentTable<?> table : setTables) {
             table.saveDocument(getDate(saveBeginDate), getDate(saveEndDate));
+        }
+    }
+
+    private void checkDateForDocuments() {
+        if(CalendarController.getDate(getDate(saveEndDate)).before(CalendarController.getDate(getDate(saveBeginDate)))){
+            String temp = getDate(saveBeginDate);
+            saveBeginDate.getEditor().setText(getDate(saveEndDate));
+            saveEndDate.getEditor().setText(temp);
         }
     }
 
@@ -168,6 +203,7 @@ public class DocumentPageControllers implements Initializable {
     }
 
     private Stage reportStage() {
+        checkDateForDocuments();
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(Main.getStage());
@@ -203,10 +239,11 @@ public class DocumentPageControllers implements Initializable {
         try {
             Integer.parseInt(text);
             return true;
-        }catch (Exception e){
-            return text.trim().equalsIgnoreCase(Reasons.MED.getReasons()) ||
-                    text.trim().equalsIgnoreCase(Reasons.REFUSAL.getReasons()) ||
-                    text.trim().equalsIgnoreCase(Reasons.NULL.getReasons());
+        } catch (Exception e) {
+            for(Reasons r : Reasons.values())
+                if(text.trim().equalsIgnoreCase(r.getReasons())) return true;
+            return false;
         }
     }
+
 }

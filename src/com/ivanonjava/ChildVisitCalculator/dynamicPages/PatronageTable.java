@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class PatronageTable extends DocumentTable<PatientForPatronage> {
@@ -111,17 +112,29 @@ public class PatronageTable extends DocumentTable<PatientForPatronage> {
     @Override
     public void
     updateTable() {
-        super.patientsList.clear();
         if(!DocumentPageControllers.search.equalsIgnoreCase("null") && DocumentPageControllers.beginDate.trim().length() > 6) {
-            super.patientsList.addAll(DatabaseController.getPatientsForPatronage(DocumentPageControllers.search, DocumentPageControllers.check, DocumentPageControllers.beginDate, DocumentPageControllers.endDate, number));
+            super.patientsList.setAll(DatabaseController.getPatientsForPatronage(DocumentPageControllers.search, DocumentPageControllers.check, DocumentPageControllers.beginDate, DocumentPageControllers.endDate, number));
         }
         else {
-            super.patientsList.addAll(DatabaseController.getPatientsForPatronage(number));
+            super.patientsList.setAll(DatabaseController.getPatientsForPatronage(number));
         }
         updateAddresses();
     }
 
     private int getNumber() {
         return number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PatronageTable that = (PatronageTable) o;
+        return number == that.number;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(t_three, t_twoW, t_threeW, patient_oneMonths, patient_twoMonths, patient_threeMonths, patient_fourMonths, patient_fiveMonths, patient_sixMonths, patient_sevenMonths, patient_eightMonths, patient_nineMonths, patient_tenMonths, patient_elevenMonths, number);
     }
 }

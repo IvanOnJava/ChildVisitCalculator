@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CalendarController {
-    private static Calendar calendar = Calendar.getInstance();;
+    private static Calendar calendar = Calendar.getInstance();
 
 
     public static Date getNow() {
@@ -19,7 +19,7 @@ public class CalendarController {
         return getDate(now);
     }
 
-    static Date getDate(String day) {
+    public static Date getDate(String day) {
         calendar.clear();
         int[] data = replaceDay(day);
         calendar.set(data[0], data[1], data[2]);
@@ -34,7 +34,6 @@ public class CalendarController {
             data[0] = Integer.parseInt(sDay[0]);
             data[1] = Integer.parseInt(sDay[1]) - 1;
             data[2] = Integer.parseInt(sDay[2]);
-            sDay = null;
             return data;
         } else if (day.contains("/")) {
             String[] sDay = day.split("/");
@@ -149,7 +148,6 @@ public class CalendarController {
 
     private static Date getDayPlusDay(Date date, int i) {
         calendar.clear();
-        ;
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_YEAR, i);
         return new Date(calendar.getTime().getTime());

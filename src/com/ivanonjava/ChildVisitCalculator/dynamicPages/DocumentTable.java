@@ -5,6 +5,7 @@ import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.helpers.ActionButtonTableCell;
 import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
 import com.ivanonjava.ChildVisitCalculator.helpers.TranslateWord;
+import com.ivanonjava.ChildVisitCalculator.pojo.Address;
 import com.ivanonjava.ChildVisitCalculator.pojo.PatientForDocument;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -19,31 +20,33 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
+import java.util.List;
+
 public abstract class DocumentTable<T extends PatientForDocument> extends TableView<T> implements Initializable {
     ObservableList<T> patientsList = FXCollections.observableArrayList();
-    private ObservableList<String> addresses = FXCollections.observableArrayList();
+    private final ObservableList<String> addresses = FXCollections.observableArrayList();
 
-    private TableColumn<T, Integer> t_id = new TableColumn<>( Constants.getInstance().NAME_TABLE_ID);
+    private final TableColumn<T, Integer> t_id = new TableColumn<>( Constants.NAME_TABLE_ID);
 
-    private TableColumn<T, Button> b_delete = new TableColumn<>( Constants.getInstance().NAME_TABLE_BUTTON);
+    private final TableColumn<T, Button> b_delete = new TableColumn<>( Constants.getInstance().NAME_TABLE_BUTTON);
 
-    private TableColumn<T, String> t_fio = new TableColumn<>( Constants.getInstance().NAME_TABLE_FULLNAME);
+    private final TableColumn<T, String> t_fio = new TableColumn<>( Constants.NAME_TABLE_FULLNAME);
 
-    private TableColumn<T, String> t_birth = new TableColumn<>( Constants.getInstance().NAME_TABLE_BIRTHDAY);
+    private final TableColumn<T, String> t_birth = new TableColumn<>( Constants.NAME_TABLE_BIRTHDAY);
 
-    private TableColumn<T, String> t_disc = new TableColumn<>( Constants.getInstance().NAME_TABLE_DISCARDDAY);
+    private final TableColumn<T, String> t_disc = new TableColumn<>( Constants.NAME_TABLE_DISCARDDAY);
 
-    private TableColumn<T, String> t_comment = new TableColumn<>( Constants.getInstance().NAME_TABLE_COMMENT);
+    private final TableColumn<T, String> t_comment = new TableColumn<>( Constants.getInstance().NAME_TABLE_COMMENT);
 
-    private TableColumn<T, Boolean> t_present = new TableColumn<>( Constants.getInstance().NAME_TABLE_PRESENT);
+    private final TableColumn<T, Boolean> t_present = new TableColumn<>( Constants.getInstance().NAME_TABLE_PRESENT);
 
-    private TableColumn<T, String> adr = new TableColumn<>( Constants.getInstance().NAME_TABLE_ADDRESS);
-    private TableColumn<T, String> t_street = new TableColumn<>( Constants.getInstance().NAME_TABLE_STREET);
-    private TableColumn<T, String> t_apart = new TableColumn<>( Constants.getInstance().NAME_TABLE_APARTMENT);
+    private final TableColumn<T, String> adr = new TableColumn<>( Constants.getInstance().NAME_TABLE_ADDRESS);
+    private final TableColumn<T, String> t_street = new TableColumn<>( Constants.NAME_TABLE_STREET);
+    private final TableColumn<T, String> t_apart = new TableColumn<>( Constants.getInstance().NAME_TABLE_APARTMENT);
 
-    private TableColumn<T, String> t_phone = new TableColumn<>( Constants.getInstance().NAME_TABLE_PHONE);
+    private final TableColumn<T, String> t_phone = new TableColumn<>( Constants.getInstance().NAME_TABLE_PHONE);
 
-    private TableColumn<T, String> t_one = new TableColumn<>( Constants.getInstance().NAME_TABLE_ONE_DAY);
+    private final TableColumn<T, String> t_one = new TableColumn<>( Constants.getInstance().NAME_TABLE_ONE_DAY);
 
 
     void updateAddresses() {
@@ -58,7 +61,6 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
             this.getColumns().add(table);
         }
     }
-
     @Override
     public void sort() {
         try {
@@ -133,7 +135,6 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
 
         setCell(t_phone, t_one);
 
-
     }
 
 
@@ -161,9 +162,20 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
     }
 
     private void editColumnAddress(TableColumn.CellEditEvent<T, String> event) {
-        event.getTableView().getItems().get(
+        if(checkAddressValue(event.getNewValue()))
+            event.getTableView().getItems().get(
                 event.getTablePosition().getRow()).setAddress(event.getNewValue());
         updated();
+    }
+
+    private boolean checkAddressValue(String newValue){
+        List<Address> list = DatabaseController.getAllAddress();
+        for(Address str: list){
+            if(str.getAddress().equals(newValue) && !newValue.trim().equalsIgnoreCase("")){
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -184,4 +196,6 @@ public abstract class DocumentTable<T extends PatientForDocument> extends TableV
     abstract void configTable();
 
     public abstract void saveDocument(String begin, String end);
+
+
 }

@@ -8,7 +8,6 @@ import javafx.scene.text.Font;
 public class CalendarButton extends Button {
     private String data;
     private boolean isHolidays;
-
     public CalendarButton(String day, String months, String year) {
         super(day);
         if (day.equals("")) {
@@ -47,6 +46,4 @@ public class CalendarButton extends Button {
             isHolidays = false;
         }
     }
-
-
 }

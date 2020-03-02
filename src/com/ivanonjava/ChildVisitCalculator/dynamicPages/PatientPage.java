@@ -3,7 +3,8 @@ package com.ivanonjava.ChildVisitCalculator.dynamicPages;
 import com.ivanonjava.ChildVisitCalculator.UI.controllers.DocumentPageControllers;
 import com.ivanonjava.ChildVisitCalculator.domains.DatabaseController;
 import com.ivanonjava.ChildVisitCalculator.helpers.Constants;
-import com.ivanonjava.ChildVisitCalculator.helpers.Converter;
+import com.ivanonjava.ChildVisitCalculator.helpers.HelperForDatepicker;
+import com.ivanonjava.ChildVisitCalculator.helpers.Reasons;
 import com.ivanonjava.ChildVisitCalculator.pojo.Patient;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -42,9 +43,11 @@ public class PatientPage extends Stage {
 
     private DatePicker dateBCJ;
     private TextField serialBCJ;
+    private MenuButton reasonsBCJ;
 
     private DatePicker dateGEP;
     private TextField serialGEP;
+    private MenuButton reasonsGEP;
 
     private CheckBox tuber;
 
@@ -55,13 +58,12 @@ public class PatientPage extends Stage {
     private Button buttonAdd;
 
     private MenuButton gender;
-
     private void configButton() {
         fullName = getTextField("ФИО");
         address_text = getTextField("Адрес");
         address_text.setEditable(false);
         addresses = new MenuButton();
-        addresses.getItems().addAll(getAddressesItems());
+        addresses.getItems().addAll(getAddressesItems(address_text));
         addresses.setText("...");
         kv = getTextField("кв");
         kv.setMaxWidth(50);
@@ -69,8 +71,6 @@ public class PatientPage extends Stage {
         phone = getTextField("Телефон");
 
         birthday = getDatePicker("Дата рождения");
-        birthday.setEditable(false);
-
         gender = new MenuButton();
         gender.getItems().addAll(getGenders());
 
@@ -79,7 +79,6 @@ public class PatientPage extends Stage {
         birthdayHeight = getTextField("Рост при рождении(см)");
 
         discardDay = getDatePicker("Дата выписки");
-        discardDay.setEditable(false);
 
         discardWeight = getTextField("Вес при выписке(г)");
 
@@ -91,9 +90,17 @@ public class PatientPage extends Stage {
 
         dateBCJ = getDatePicker("Дата БЦЖ");
         serialBCJ = getTextField("Серия БЦЖ");
-        serialBCJ.setTooltip(tooltipSerialBCJ);
+        serialBCJ.setTooltip(tooltipSerial);
+        reasonsBCJ = new MenuButton();
+        reasonsBCJ.getItems().addAll(getReasonsItems(serialBCJ));
+        reasonsBCJ.setText("...");
+
         dateGEP = getDatePicker("Дата гепатита");
         serialGEP = getTextField("Серия гепатита");
+        serialGEP.setTooltip(tooltipSerial);
+        reasonsGEP = new MenuButton();
+        reasonsGEP.getItems().addAll(getReasonsItems(serialGEP));
+        reasonsGEP.setText("...");
 
         tuber = new CheckBox();
 
@@ -106,7 +113,7 @@ public class PatientPage extends Stage {
             if (fullName.getText().length() > 0 &&
                     address_text.getText().length() > 2 &&
                     birthday.getEditor().getText().length() > 5 &&
-                    discardDay.getEditor().getText().length() > 5 && !gender.getText().trim().equalsIgnoreCase("") && check(serialBCJ.getText())) {
+                    discardDay.getEditor().getText().length() > 5 && !gender.getText().trim().equalsIgnoreCase("") && check(serialBCJ.getText()) && check(serialGEP.getText())) {
                 DatabaseController.addPatient(
                         new Patient(
                                 getText(fullName),
@@ -133,11 +140,8 @@ public class PatientPage extends Stage {
                 );
                 tuber.setSelected(false);
                 gender.setText("");
-                /*clear(fullName, address_text, kv, phone, birthday.getEditor(), birthdayWeight, birthdayHeight,
-                        discardDay.getEditor(), discardWeight, diagnose, dateNBO.getEditor(), dateAUDIO.getEditor(),
-                        dateBCJ.getEditor(), serialBCJ, dateGEP.getEditor(), serialGEP, roddom, helper);*/
                 DocumentPageControllers.update();
-                DocumentPageControllers.reopen();
+                DocumentPageControllers.reopenAddPatientPage();
             }
         });
 
@@ -147,36 +151,29 @@ public class PatientPage extends Stage {
         boolean c = DocumentPageControllers.checkSerial(text);
         if(!c){
             Point2D point = serialBCJ.localToScreen(serialBCJ.getLayoutBounds().getMaxX(), serialBCJ.getLayoutBounds().getMaxY());
-            serialBCJ.setTooltip(tooltipSerialBCJ);
-            if(!tooltipSerialBCJ.isShowing())
-               tooltipSerialBCJ.show(serialBCJ, point.getX(), point.getY());
+            serialBCJ.setTooltip(tooltipSerial);
+            if(!tooltipSerial.isShowing())
+               tooltipSerial.show(serialBCJ, point.getX(), point.getY());
         }
         return c;
-    }
-
-    @SafeVarargs
-    private final <T extends TextInputControl> void clear(T... nodes) {
-        for (T node : nodes) {
-            node.clear();
-        }
     }
 
 
     private <T extends TextInputControl> String getText(T node) {
         return node.getText().trim();
     }
-    Tooltip tooltipSerialBCJ;
+    Tooltip tooltipSerial;
     public PatientPage() {
-        tooltipSerialBCJ = new Tooltip(   Constants.getInstance().getInstance().getInstance().TOOLTIP_SERIAL_PATIENTPAGE);
+        tooltipSerial = new Tooltip(   Constants.getInstance().TOOLTIP_SERIAL_PATIENTPAGE);
 
-        getIcons().add(new Image(   Constants.getInstance().getInstance().getInstance().PATH_ICON_ADD_PATIENT));
+        getIcons().add(new Image(   Constants.getInstance().PATH_ICON_ADD_PATIENT));
         configButton();
         VBox vBoxLeft = new VBox();
         vBoxLeft.getChildren().addAll(
                 new Separator(),
                 getControl("ФИО                 ", fullName),
                 new Separator(),
-                getControl("Адрес", address_text, addresses, kv),
+                getControl("Адрес ", address_text, addresses, kv),
                 new Separator(),
                 getControl("Дата рождения       ", birthday),
                 new Separator(),
@@ -199,9 +196,9 @@ public class PatientPage extends Stage {
                 new Separator(),
                 getControl("Дата АУДИОСКРИНИНГА ", dateAUDIO),
                 new Separator(),
-                getControl("БЦЖ ", dateBCJ, serialBCJ),
+                getControl("БЦЖ ", dateBCJ, serialBCJ, reasonsBCJ),
                 new Separator(),
-                getControl("ГЕПАТИТ ", dateGEP, serialGEP),
+                getControl("ГЕПАТИТ ", dateGEP, serialGEP, reasonsGEP),
                 new Separator(),
                 getControl("Туберкулез   ", tuber),
                 new Separator(),
@@ -250,16 +247,26 @@ public class PatientPage extends Stage {
         DatePicker picker = new DatePicker();
         picker.setEditable(true);
         picker.setPromptText(name);
-        picker.setConverter(Converter.getConverter());
+        picker.setConverter(HelperForDatepicker.getConverter());
+        picker.getEditor().setTextFormatter(HelperForDatepicker.getFormatter());
         return picker;
     }
 
-    private MenuItem[] getAddressesItems() {
+    private MenuItem[] getAddressesItems(TextField e) {
         ArrayList<String> adr = DatabaseController.getAddresses();
-        MenuItem[] items = new MenuItem[adr.size()];
-        for (int i = 0; i < adr.size(); i++) {
-            MenuItem item = new MenuItem(adr.get(i));
-            item.setOnAction(event -> address_text.setText(item.getText()));
+        return getMenuItems(e, adr);
+    }
+
+    private MenuItem[] getReasonsItems(TextField e){
+        ArrayList<String> reasons = Reasons.getValues();
+        return getMenuItems(e, reasons);
+    }
+
+    private MenuItem[] getMenuItems(TextField e, ArrayList<String> reasons) {
+        MenuItem[] items = new MenuItem[reasons.size()];
+        for (int i = 0; i < reasons.size(); i++) {
+            MenuItem item = new MenuItem(reasons.get(i));
+            item.setOnAction(event -> e.setText(item.getText()));
             items[i] = item;
 
         }

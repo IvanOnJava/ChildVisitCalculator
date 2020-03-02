@@ -29,24 +29,34 @@ public class NewHolidaysPageControllers implements Initializable {
     public GridPane gNov;
     public GridPane gDec;
 
-
+    /**
+     * reduce year for calendar
+     */
     public void reduceYear() {
         cellYEAR.setText(String.valueOf(Integer.parseInt(cellYEAR.getText()) - 1));
         config();
     }
 
+    /**
+     * increase year for calendar
+     */
     public void increaseYear() {
         cellYEAR.setText(String.valueOf(Integer.parseInt(cellYEAR.getText()) + 1));
         config();
     }
 
-
+    /**
+     * initialize year(take that year)
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        cellYEAR.setText(new SimpleDateFormat("YYYY").format(CalendarController.getNow()));
+        cellYEAR.setText(new SimpleDateFormat("yyyy").format(CalendarController.getNow()));
         config();
     }
 
+    /**
+     * create calendar use year and list holidays
+     */
     private void config() {
         update(gJan, gFeb, gMar, gApr, gMay, gJun, gJul, gAvg, gSep, gOct, gNov, gDec);
     }

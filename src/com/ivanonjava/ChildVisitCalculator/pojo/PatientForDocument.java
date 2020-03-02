@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.Objects;
+
 public abstract class PatientForDocument {
     private SimpleIntegerProperty id;
     private SimpleStringProperty FIO;
@@ -35,6 +37,7 @@ public abstract class PatientForDocument {
         this.twoWeeks = new SimpleStringProperty(replaceDate(twoWeek));
         this.threeWeeks = new SimpleStringProperty(replaceDate(threeWeek));
     }
+
     String replaceDate(String date) {
         String[] temp = date.split("-");
         return String.format("%s.%s.%s", temp[2], temp[1], temp[0]);
@@ -43,11 +46,6 @@ public abstract class PatientForDocument {
     public void deletePatient(){
         DatabaseController.deletePatient(this.getId());
     }
-    @Override
-    public int hashCode() {
-        return (getFIO() + getAddress() + getBirthday() + getPhone()).hashCode();
-    }
-
 
     @Override
     public String toString() {
@@ -217,5 +215,24 @@ public abstract class PatientForDocument {
     public void setThreeWeeks(String threeWeeks) {
         if(DatabaseController.updatePatientThreeWeeks(getId(), threeWeeks))
          this.threeWeeks.set(threeWeeks);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PatientForDocument that = (PatientForDocument) o;
+        return id.equals(that.id) &&
+                FIO.equals(that.FIO) &&
+                birthday.equals(that.birthday) &&
+                discardDay.equals(that.discardDay) &&
+                address.equals(that.address) &&
+                kv.equals(that.kv) &&
+                phone.equals(that.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, FIO, birthday, discardDay, address, kv, phone);
     }
 }

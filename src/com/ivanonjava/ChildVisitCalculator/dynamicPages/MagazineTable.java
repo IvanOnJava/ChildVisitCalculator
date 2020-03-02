@@ -50,7 +50,6 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
         super.configDocumentTable();
         t_twoW.setCellValueFactory(new PropertyValueFactory<>("twoWeeks"));
         t_twoW.setOnEditCommit(this::editColumnTwoWeeks);
-
         t_threeW.setCellValueFactory(new PropertyValueFactory<>("threeWeeks"));
         t_threeW.setOnEditCommit(this::editColumnThreeWeeks);
         setCell(t_twoW, t_threeW);
@@ -110,9 +109,7 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
 
         t_serialBCJ.setCellValueFactory(new PropertyValueFactory<>("serialBCJ"));
         t_serialBCJ.setOnEditCommit(this::editColumnSerialBCJ);
-        t_serialBCJ.setOnEditStart(event -> {
-           serialBCJTooltip.show(this, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y + 20);
-        });
+        t_serialBCJ.setOnEditStart(event -> serialBCJTooltip.show(this, MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y + 20));
         t_GEP.setCellValueFactory(new PropertyValueFactory<>("dateGEP"));
         t_GEP.setOnEditCommit(this::editColumnDateGEP);
 
@@ -194,8 +191,10 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
     }
 
     private void editColumnDateGEP(TableColumn.CellEditEvent<PatientForMagazine, String> event) {
-        event.getTableView().getItems().get(
-                event.getTablePosition().getRow()).setDateGEP(event.getNewValue());
+        if(DocumentPageControllers.checkSerial(event.getNewValue()))
+            event.getTableView().getItems().get(
+                    event.getTablePosition().getRow()).setDateGEP(event.getNewValue());
+        serialBCJTooltip.hide();
         updated();
     }
 
@@ -238,15 +237,14 @@ public final class MagazineTable extends DocumentTable<PatientForMagazine> {
 
     @Override
     public void updateTable() {
-        super.patientsList.clear();
         if (!DocumentPageControllers.search.equalsIgnoreCase("null") && DocumentPageControllers.beginDate.trim().length() > 6) {
-            super.patientsList.addAll(DatabaseController.getPatientsForMagazine(DocumentPageControllers.search, DocumentPageControllers.check, DocumentPageControllers.beginDate, DocumentPageControllers.endDate));
+            super.patientsList.setAll(DatabaseController.getPatientsForMagazine(DocumentPageControllers.search, DocumentPageControllers.check, DocumentPageControllers.beginDate, DocumentPageControllers.endDate));
         } else {
-            super.patientsList.addAll(DatabaseController.getPatientsForMagazine());
+            super.patientsList.setAll(DatabaseController.getPatientsForMagazine());
         }
-        super.patientsList.sorted();
         updateAddresses();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
